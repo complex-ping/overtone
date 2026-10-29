@@ -20,7 +20,7 @@ send the result to the Digitone with Elektron Transfer. No Elektron firmware fil
 - [How it's made and tested](#how-its-made-and-tested)
 - [Credits](#credits) and [licence](#licence)
 
-The screens below are taken from Overtone 1.0 running in an emulator.
+The screens below are taken from Overtone running in an emulator.
 
 ## What's in it
 
@@ -190,7 +190,7 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
 3. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
    download **Digitone II OS 1.12** (`Digitone_II_OS1.12_dist.zip`). **Keep this file:** Elektron's page lists only
    the current OS, and you need it to go back or to make another build.
-4. **Download Overtone** from [Releases](../../releases) (`overtone-1.0.zip`) and unzip it.
+4. **Download Overtone** from [Releases](../../releases) (`overtone-1.0.1.zip`) and unzip it.
 5. **Make the build.** In a terminal, in the unzipped folder:
 
    ```bash
@@ -198,20 +198,21 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
    ```
 
    It checks that the file is Elektron's original OS 1.12, rebuilds Overtone from it in 1 to 3 minutes, and saves
-   `Overtone-1.0.syx` next to the .zip, but only if the result is byte for byte the build we tested. The .zip, its
+   `Overtone-1.0.1.syx` next to the .zip, but only if the result is byte for byte the build we tested. The .zip, its
    unzipped folder and the .syx all work as input.
-6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.0.syx` onto it, answer **YES** on
+6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.0.1.syx` onto it, answer **YES** on
    the Digitone and wait for it to restart.
 
 Keep the volume down the first time it plays.
 
 ## Going back, and recovery
 
-> **Known issue in 1.0:** while Overtone runs, an OS sent with Transfer stops on **PREPARING...**. Nothing is
-> written: switch the Digitone off and on and it starts Overtone as before. Until a fixed version is out, go back with
-> the STARTUP menu below (it doesn't need Overtone to receive anything).
-
-- **Back to Elektron's OS:** use the STARTUP menu below with Elektron's `Digitone_II_OS1.12.syx` (inside the .zip).
+- **Back to Elektron's OS:** send Elektron's `Digitone_II_OS1.12.syx` (inside the .zip) with Transfer, the same way.
+  Overtone installs it by itself, without asking for YES.
+- **Updating Overtone:** send the new build with Transfer the same way.
+- **On Overtone 1.0:** an OS sent with Transfer stops on **Receiving** or **PREPARING...** and nothing is written:
+  switch the Digitone off and on. To get to 1.0.1, go back to Elektron's OS with the STARTUP menu below, then send
+  1.0.1 with Transfer.
 - **If the Digitone doesn't start:**
   1. Hold **[FUNC]** while you switch it on. The STARTUP menu appears.
   2. Press **[TRIG 4]** (OS UPGRADE).
@@ -227,7 +228,7 @@ Keep the volume down the first time it plays.
   and values the stock OS doesn't use. **LFO 3's storage holds ARP 2:** a sound that used LFO 3 loses it.
 - **Swing** is gone. A project's saved swing is ignored, and GROOVE takes its place.
 - **Opening Overtone projects on Elektron's OS** is not tested. Keep a copy.
-- **OS upgrades sent over USB install without a confirmation** on the unit.
+- **An OS sent over USB installs without a confirmation** on the unit (Transfer included).
 
 ## Known limitations
 
@@ -246,12 +247,19 @@ about 160 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.0 is the build we play on our own Digitone II. It passed 159 of the 161 checks. The other two failed
-only in the emulator (opening GROOVE, and an ENV page copy and paste), and both work on the unit.
+Overtone 1.0.1 is the build we play on our own Digitone II. It passed 160 of the 162 checks. The other two failed
+only in the emulator (opening GROOVE, and an ENV page copy and paste), and both work on the unit. Installing with
+Transfer, from Elektron's OS and from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds our changes as copy instructions over your own file, plus
 our own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
 it. It seals the build with the key it derives from your file, as the Digitone expects.
+
+## Versions
+
+- **1.0.1** (29 Oct 2026): an OS sent with Transfer while Overtone runs now installs (1.0 stopped on Receiving or
+  PREPARING...). Nothing else changed.
+- **1.0** (29 Oct 2026): the first release.
 
 ## Credits
 
