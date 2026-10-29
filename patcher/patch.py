@@ -139,7 +139,7 @@ def main():
         sys.exit(f'Refused: {e}')
     dst.write_bytes(out)
     print(f'Saved {dst}\n  sha256 {pack["out_sha256"]}\n'
-          'Send it to the Digitone with Elektron Transfer (keep the volume down the first time it plays).')
+          'Send it to the Digitone with Elektron Transfer.')
 
 
 if __name__ == '__main__':

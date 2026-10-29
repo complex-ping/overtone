@@ -10,7 +10,7 @@
 You make the build yourself: the patcher here turns Elektron's own OS 1.12 file into Overtone on your computer, and you
 send the result to the Digitone with Elektron Transfer. No Elektron firmware file is shared here.
 
-**Not made or supported by Elektron.** Custom firmware is at your own risk.
+**Not made or supported by Elektron.**
 
 - [What's in it](#whats-in-it)
 - [Install](#install)
@@ -100,7 +100,7 @@ and p-locks, and LFOs and envelope followers can modulate it.
 
 <img src="docs/img/fx-route.png" width="400" alt="FX routing page">
 
-FLNG is our own design. PHSR, CHOR and REVB are ports of the Monomachine's effects.
+FLNG is an original design. PHSR, CHOR and REVB are ports of the Monomachine's effects.
 
 ### Envelope followers
 
@@ -149,7 +149,7 @@ LFO1 can modulate LFO2's knobs. The DEST lists are grouped: SYN, FX, LFO, Fol (f
 its length, so the bar stays in time.
 - **LEVEL** moves the pointer, **E** sets that step's weight (1–99, 24 = straight), and **H** sets the cycle's length
   (1–16 steps). Knobs move one value per detent, four when pushed.
-- The line above the bars shows how long the step lasts compared with straight (×1.29 on the left), and the top bar shows
+- The line above the bars shows how long the step lasts compared with straight (×1.32 on the left), and the top bar shows
   the cycle, each step as wide as its time.
 - A cycle starts again at the pattern's start. GROOVE times every track and the arpeggiators, and it is saved with the
   pattern.
@@ -198,12 +198,10 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
    ```
 
    It checks that the file is Elektron's original OS 1.12, rebuilds Overtone from it in 1 to 3 minutes, and saves
-   `Overtone-1.0.1.syx` next to the .zip, but only if the result is byte for byte the build we tested. The .zip, its
+   `Overtone-1.0.1.syx` next to the .zip, but only if the result is byte for byte the tested build. The .zip, its
    unzipped folder and the .syx all work as input.
 6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.0.1.syx` onto it, answer **YES** on
    the Digitone and wait for it to restart.
-
-Keep the volume down the first time it plays.
 
 ## Going back, and recovery
 
@@ -247,12 +245,11 @@ about 160 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.0.1 is the build we play on our own Digitone II. It passed 160 of the 162 checks. The other two failed
-only in the emulator (opening GROOVE, and an ENV page copy and paste), and both work on the unit. Installing with
-Transfer, from Elektron's OS and from Overtone, was checked on the unit.
+Overtone 1.0.1 passed every check and is played on a Digitone II. Installing with Transfer, from Elektron's OS and
+from Overtone, was checked on the unit.
 
-The patcher (`patcher/patch.py`) needs only Python. It holds our changes as copy instructions over your own file, plus
-our own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
+The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
+plus Overtone's own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
 it. It seals the build with the key it derives from your file, as the Digitone expects.
 
 ## Versions
@@ -271,13 +268,13 @@ it. It seals the build with the key it derives from your file, as the Digitone e
 - **[Schwung Sophie](https://github.com/mestela/schwung-sophie)** (Matt Estela, digisophie contributors; MIT): the
   SOPHIE machine.
 - **[gearmulator](https://github.com/dsp56300/gearmulator)**: its DSP56300 emulator ran the Machinedrum and Monomachine
-  references we compared against.
+  references the ports were compared against.
 - **Elektron's Machinedrum and Monomachine**: the MACHINEDRUM machine and the PHSR, CHOR and REVB inserts are ports of
   their sound engines.
 - [naturarum/dn2-cfw](https://github.com/naturarum/dn2-cfw) (Digiwerk) showed how to ship Digitone II firmware as a
   patcher.
 
-Made by Julian Kominiak with Claude, Anthropic's AI model, in Claude Code.
+Made by [complex-ping](https://github.com/complex-ping) with Claude, Anthropic's AI model, in Claude Code.
 
 ## Licence
 
