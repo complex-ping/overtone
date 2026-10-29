@@ -1,8 +1,8 @@
 # Overtone
 
 **Overtone** is custom firmware for the **Elektron Digitone II**, built on OS 1.12. It adds:
+- four new machines: **SOPHIE**, **MACHINEDRUM**, **LOOP** and **THRU**;
 - per-track insert effects;
-- four new machines (THRU, SOPHIE, LOOP and MACHINEDRUM);
 - envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale;
 - parameter slides and knobs that show what is playing;
 - GROOVE, a step-by-step timing editor that replaces swing.
@@ -24,60 +24,113 @@ The screens below are taken from Overtone 1.0 running in an emulator.
 
 ## What's in it
 
-### Insert effects on every track
+Pick the new machines like any other: **[FUNC] + [SYN]** on a track.
 
-Every track gets its own insert effect, on top of the shared delay, reverb and chorus. Each insert has its own settings and
-p-locks, and LFOs and envelope followers can modulate it.
+### SOPHIE
 
-| | |
-|---|---|
-| <img src="docs/img/fx-insert-select.png" width="320" alt="FX page with M.SEL and MOD"> | **[FX], first page.** **D M.SEL** picks the insert: **FLNG** (flanger), **PHSR** (phaser), **CHOR** (chorus) or **REVB** (reverb). **H MOD** is the insert's dry/wet. Both can be p-locked, so one trig can switch to another effect. |
-| <img src="docs/img/fx-insert-knobs.png" width="320" alt="Insert knobs"> | **[FX], second page: the insert's knobs.** FLNG, PHSR and CHOR: **DEL** (or CNTR), **DPTH**, **SPD**, **FDBK** / **WDTH** (stereo width), **SPH** (or LP), **FL.RT**, **SHPE**. REVB: **DEC DAMP GATE PDLY** / **LP HP MODD WDTH**. **FL.RT** routes the insert **PRE FLTR** (before the filter, in stereo: the track takes two voices per note) or **POST FLTR** (after the pan). |
-| <img src="docs/img/fx-route.png" width="320" alt="FX routing page"> | **[FX], third page.** **SR.RT** and **OD.RT** put the stock bit reduction and overdrive before or after the filter. |
+<img src="docs/img/sophie-1.png" width="400" alt="SOPHIE page 1"> <img src="docs/img/sophie-2.png" width="400" alt="SOPHIE page 2">
 
-FLNG is our own design. PHSR, CHOR and REVB are ports of the Monomachine's effects.
+Percussive metal, pipes and kicks: a port of Matt Estela's **Schwung Sophie** synth.
+- **Page 1:** **TUNE DCAY MDCY COLR** / **METL FBK SWEP CRSH**.
+- **Page 2:** **RTIM RFBK RMIX RTON** / **MODL** (FUSE, STAK, SPLT, SHRD, PIPE, BOOM, KICK), **FBMD** (RAW / SMTH),
+  **DRIV**.
+- It has no filter of its own: use the track's filter.
 
-### THRU machine
+### MACHINEDRUM
 
-| | |
-|---|---|
-| <img src="docs/img/thru.png" width="320" alt="THRU machine"> | A synth machine whose sound is **another track's output**, sent through this track's own overdrive, filter, amp, pan and insert. **SRC** picks the track (by default the one on the left), **GAIN** sets the level (64 = unchanged), **MIX** crossfades from the source to THRU (at 127 only THRU is heard, the source's delay and reverb sends included), and **MONO** chooses **STER** (stereo) or **MONO**. Select it like any machine: **[FUNC] + [SYN]**. |
+<img src="docs/img/md-2.png" width="400" alt="MACHINEDRUM page 2"> <img src="docs/img/md-1.png" width="400" alt="MACHINEDRUM page 1">
 
-### SOPHIE machine
+Three of the **Machinedrum's** synthesis families in one machine, ported from its own sound engines.
+- **Page 2:** **FAM** picks the family, **MODL** the model.
+  - **TRX:** BD B2 SD RS XT XC CP MA CB CL CH OH CY.
+  - **EFM:** BD SD XT CP RS CB HH CY.
+  - **P-I** (physical models): BD SD MT ML MA RS RC CC HH.
+- **Page 1:** the model's 8 knobs, labelled as on the Machinedrum.
+- Notes above or below C4 transpose it.
 
-| | |
-|---|---|
-| <img src="docs/img/sophie-1.png" width="320" alt="SOPHIE page 1"> <img src="docs/img/sophie-2.png" width="320" alt="SOPHIE page 2"> | Percussive metal, pipes and kicks: a port of Matt Estela's **Schwung Sophie** synth. Page 1: **TUNE DCAY MDCY COLR** / **METL FBK SWEP CRSH**. Page 2: **RTIM RFBK RMIX RTON** / **MODL** (FUSE, STAK, SPLT, SHRD, PIPE, BOOM, KICK) **FBMD** (RAW / SMTH) **DRIV**. It has no filter of its own: use the track's filter. |
+### LOOP
 
-### LOOP machine
+<img src="docs/img/loop-1.png" width="400" alt="LOOP page 1"> <img src="docs/img/loop-2.png" width="400" alt="LOOP page 2">
 
 A looper on a synth track, after the Machinedrum's RAM machines. It records all the time (8 seconds per track, stereo).
 A trig plays what it has, at the trig's pitch. Selecting LOOP on an empty track puts a 16-step trig on step 1.
+- **Page 1:**
+  - **SRC:** what it records: a track (**T1**–**T16**), **MAIN** (the mix) or **IN** (the audio inputs, after the
+    external mixer), or **OFF** (freezes the buffer).
+  - **LEN:** the take's length. **GAIN**, and **FDBK** (overdub).
+  - **MIX:** crossfades the source into the loop. **INS:** **MIX** replaces the source, **LAYR** plays the loop on top
+    of it.
+  - **SLCE:** cuts the take into slices, played by note (C4 = the first slice). **SNAP:** start and end move in steps.
+- **Page 2 ([SYN] again): the buffer.** The waveform, where it records and where it plays. **STRT END PTCH DIR** /
+  **XFAD LOOP MODE SPED**.
+  - **MODE TAPE:** speed follows pitch. **STRC:** time-stretch, so pitch (**PTCH**, ±36 semitones) and speed (**SPED**)
+    are separate.
+  - Push **A** or **B** to link start and end: the chain icon joins and END becomes the window size.
+  - Hold **[FUNC]** while turning **SPED** to step through ratios (×1, ×1.5, ×2 …), or **PTCH** to step through fifths
+    and octaves.
 
-| | |
-|---|---|
-| <img src="docs/img/loop-1.png" width="320" alt="LOOP page 1"> | **Page 1.** **SRC**: what it records: a track (**T1**–**T16**), **MAIN** (the mix) or **IN** (the audio inputs, after the external mixer), or **OFF** (freezes the buffer). **LEN**: the take's length. **GAIN**, **FDBK** (overdub). **MIX**: crossfades the source into the loop. **INS**: **MIX** replaces the source, **LAYR** plays the loop on top of it. **SLCE**: cuts the take into slices, played by note (C4 = the first slice). **SNAP**: start and end move in steps. |
-| <img src="docs/img/loop-2.png" width="320" alt="LOOP page 2"> | **Page 2 ([SYN] again): the buffer.** The waveform, where it records and where it plays. **STRT END PTCH DIR** / **XFAD LOOP MODE SPED**. **MODE TAPE** = speed follows pitch, **STRC** = time-stretch, so pitch (**PTCH**, ±36 semitones) and speed (**SPED**) are separate. Push **A** or **B** to link start and end: the chain icon joins and END becomes the window size. Hold **[FUNC]** while turning **SPED** to step through ratios (×1, ×1.5, ×2 …), or **PTCH** to step through fifths and octaves. |
+### THRU
 
-### MACHINEDRUM machine
+<img src="docs/img/thru.png" width="400" alt="THRU machine">
 
-| | |
-|---|---|
-| <img src="docs/img/md-2.png" width="320" alt="MD page 2"> <img src="docs/img/md-1.png" width="320" alt="MD page 1"> | Three of the **Machinedrum's** synthesis families in one machine. Page 2: **FAM** picks the family, **MODL** the model. **TRX**: BD B2 SD RS XT XC CP MA CB CL CH OH CY. **EFM**: BD SD XT CP RS CB HH CY. **P-I** (physical models): BD SD MT ML MA RS RC CC HH. Page 1 has the model's 8 knobs, labelled as on the Machinedrum. Notes above or below C4 transpose it. They are ports of the Machinedrum's own sound engines. |
+A machine whose sound is **another track's output**, sent through this track's own overdrive, filter, amp, pan and
+insert.
+- **SRC:** the source track (by default the one on the left).
+- **GAIN:** the level (64 = unchanged).
+- **MIX:** crossfades from the source to THRU. At 127 only THRU is heard, including the source's delay and reverb sends.
+- **MONO:** **STER** (stereo) or **MONO**.
+
+### Insert effects on every track
+
+<img src="docs/img/fx-insert-select.png" width="400" alt="FX page with M.SEL and MOD"> <img src="docs/img/fx-insert-knobs.png" width="400" alt="Insert knobs">
+
+Every track gets its own insert effect, on top of the shared delay, reverb and chorus. Each insert has its own settings
+and p-locks, and LFOs and envelope followers can modulate it.
+- **[FX], first page:**
+  - **D M.SEL** picks the insert: **FLNG** (flanger), **PHSR** (phaser), **CHOR** (chorus) or **REVB** (reverb).
+  - **H MOD** is the insert's dry/wet.
+  - Both can be p-locked, so one trig can switch to another effect.
+- **[FX], second page: the insert's knobs.**
+  - FLNG, PHSR and CHOR: **DEL** (or CNTR), **DPTH**, **SPD**, **FDBK** / **WDTH** (stereo width), **SPH** (or LP),
+    **FL.RT**, **SHPE**.
+  - REVB: **DEC DAMP GATE PDLY** / **LP HP MODD WDTH**.
+  - **FL.RT** routes the insert **PRE FLTR** (before the filter, in stereo: the track takes two voices per note) or
+    **POST FLTR** (after the pan).
+- **[FX], third page:** **SR.RT** and **OD.RT** put the stock bit reduction and overdrive before or after the filter.
+
+<img src="docs/img/fx-route.png" width="400" alt="FX routing page">
+
+FLNG is our own design. PHSR, CHOR and REVB are ports of the Monomachine's effects.
 
 ### Envelope followers
 
-| | |
-|---|---|
-| <img src="docs/img/env1.png" width="320" alt="Envelope follower page"> | Two followers per sound. On a **[MOD]** page press **RIGHT** for ENV1 (UP / DOWN for ENV2), **LEFT** to go back to the LFOs. **SRC**: the track it listens to (by default its own). **ATK** and **DEC**: how fast it follows. **DEST**: what it moves (any parameter, as with LFO DEST). **IN** and **OUT** show the input and output levels as meters; turning them sets the gain. **THR**: the threshold below which it does nothing. **DEP**: the depth, positive or negative. Every knob can be p-locked. |
+<img src="docs/img/env1.png" width="400" alt="Envelope follower page"> <img src="docs/img/lfo1.png" width="400" alt="LFO page">
+
+Two followers per sound. On a **[MOD]** page press **RIGHT** for ENV1 (UP / DOWN for ENV2), and **LEFT** to go back
+to the LFOs.
+- **SRC:** the track it listens to (by default its own).
+- **ATK** and **DEC:** how fast it follows.
+- **DEST:** what it moves (any parameter, as with LFO DEST).
+- **IN** and **OUT:** meters of the input and output levels; turning them sets the gain.
+- **THR:** the threshold below which it does nothing.
+- **DEP:** the depth, positive or negative.
+- Every knob can be p-locked.
 
 ### Two arpeggiators
 
-| | |
-|---|---|
-| <img src="docs/img/arp1.png" width="320" alt="ARP 1 menu"> | **ARP 1** is the stock arpeggiator with more controls. The second row: **E OFS** (the selected step's offset; LEFT / RIGHT picks the step), **F DEST**, **G DEP**, **H LEN**. **DEST PITCH** plays the arp **in the keyboard scale** (KEYBOARD SETUP: ROOT and SCALE), and **DEP** stretches or flips the pattern (×−4 to ×4). Point **DEST** anywhere else and each step moves that parameter by its offset while the note stays. **UP / DOWN** mutes or unmutes the selected step. |
-| <img src="docs/img/arp2.png" width="320" alt="ARP 2 menu"> | **ARP 2** is a step modulator: it plays no notes. It restarts at every trig and moves its DEST by each step's offset × DEP. On PITCH it adds scale degrees to ARP 1's notes. **Tap [ARP]** in the menu to switch between ARP 1 and ARP 2. **Hold [ARP] and press [YES]** to randomize the shown arp. **[FUNC] + [ARP]** or a page key closes the menu. |
+<img src="docs/img/arp1.png" width="400" alt="ARP 1 menu"> <img src="docs/img/arp2.png" width="400" alt="ARP 2 menu">
 
+- **ARP 1** is the stock arpeggiator with more controls. The second row:
+  - **E OFS:** the selected step's offset (LEFT / RIGHT picks the step).
+  - **F DEST:** on **PITCH** the arp plays **in the keyboard scale** (KEYBOARD SETUP: ROOT and SCALE). Anywhere else,
+    each step moves that parameter by its offset while the note stays.
+  - **G DEP:** on PITCH it stretches or flips the pattern (×−4 to ×4); elsewhere it is the depth.
+  - **H LEN.**
+  - **UP / DOWN** mutes or unmutes the selected step.
+- **ARP 2** is a step modulator: it plays no notes. It restarts at every trig and moves its DEST by each step's
+  offset × DEP. On PITCH it adds scale degrees to ARP 1's notes.
+- **Keys in the ARP menu:** tap **[ARP]** to switch between ARP 1 and ARP 2. Hold **[ARP]** and press **[YES]** to
+  randomize the shown arp. **[FUNC] + [ARP]** or a page key closes the menu.
 - **Per trig:** in GRID RECORDING, hold a trig and turn the ARP knobs. That trig's arp uses the locked values, so, for
   example, one trig can arpeggiate while the rest don't. Mutes set on a held trig apply to that trig only.
 - **Live recording** records ARP knob moves as locks.
@@ -85,24 +138,33 @@ A trig plays what it has, at the trig's pitch. Selecting LOOP on an empty track 
 ### Cross-modulation
 
 Each sound has two LFOs (**[MOD]**, UP / DOWN), two envelope followers and two arps. Every continuous knob of each of
-them is a destination for the others. For example, LFO1 can wobble ARP 1's speed, ARP 2 can step ENV1's depth, and LFO1
-can modulate LFO2's knobs. The DEST lists are grouped: SYN, FX, LFO, Fol (followers), ARP.
-
-<img src="docs/img/lfo1.png" width="320" alt="LFO page">
+them is a destination for the others: for example, LFO1 can wobble ARP 1's speed, ARP 2 can step ENV1's depth, and
+LFO1 can modulate LFO2's knobs. The DEST lists are grouped: SYN, FX, LFO, Fol (followers), ARP.
 
 ### GROOVE
 
-| | |
-|---|---|
-| <img src="docs/img/groove-swing.png" width="320" alt="GROOVE page"> | **[FUNC] + [TEMPO]** opens GROOVE. It replaces swing: you give each step of a cycle a **weight**, and the cycle keeps its length, so the bar stays in time. **LEVEL** moves the pointer. **E** sets that step's weight (1–99, 24 = straight). **H** sets the cycle's length (1–16 steps). The line above shows how long each step lasts compared with straight (×1.29 here). The top bar shows the cycle, each step as wide as its time. A cycle starts again at the pattern's start. It times every track and the arpeggiators, and it is saved with the pattern. |
-| <img src="docs/img/groove.png" width="320" alt="GROOVE straight"> | **Examples.** Classic swing: LEN 2, weights 32 / 16. A shuffle or triplet feel: LEN 3 or 6 with uneven weights. Straight (the default): every weight 24. Knobs move one value per detent, four when pushed. |
-| <img src="docs/img/tempo.png" width="320" alt="TEMPO screen"> | **[TEMPO]** shows the tempo screen without SWING. Tap tempo is gone ([FUNC] + [TEMPO] opens GROOVE). |
+<img src="docs/img/groove-swing.png" width="400" alt="GROOVE with a swing"> <img src="docs/img/groove.png" width="400" alt="GROOVE straight">
+
+**[FUNC] + [TEMPO]** opens GROOVE. It replaces swing: you give each step of a cycle a **weight**, and the cycle keeps
+its length, so the bar stays in time.
+- **LEVEL** moves the pointer, **E** sets that step's weight (1–99, 24 = straight), and **H** sets the cycle's length
+  (1–16 steps). Knobs move one value per detent, four when pushed.
+- The line above the bars shows how long the step lasts compared with straight (×1.29 on the left), and the top bar shows
+  the cycle, each step as wide as its time.
+- A cycle starts again at the pattern's start. GROOVE times every track and the arpeggiators, and it is saved with the
+  pattern.
+- **Examples:** classic swing: LEN 2, weights 32 / 16. A shuffle or triplet feel: LEN 3 or 6 with uneven weights.
+  Straight (the default): every weight 24.
+
+<img src="docs/img/tempo.png" width="400" alt="TEMPO screen">
+
+**[TEMPO]** shows the tempo screen without SWING. Tap tempo is gone ([FUNC] + [TEMPO] opens GROOVE).
 
 ### Parameter slides
 
 On **TRIG page 2**, **SLD** turns on a slide for the trig and **SLEN** sets its length, in steps. Every parameter the trig
-changes (its p-locks, or the sound's values) glides from where the track was to the new value. That includes the insert
-effects. Turning a knob by hand acts at once.
+changes (its p-locks, or the sound's values) glides from where the track was to the new value, insert effects included.
+Turning a knob by hand acts at once.
 
 ### Knobs that show what is playing
 
@@ -112,7 +174,7 @@ page key shows the set values as numbers. Holding a trig shows that trig's locks
 
 ### DSP load
 
-<img src="docs/img/dsp-load.png" width="320" alt="SETTINGS > SYSTEM > DSP LOAD">
+<img src="docs/img/dsp-load.png" width="400" alt="SETTINGS > SYSTEM > DSP LOAD">
 
 **[SETTINGS] > SYSTEM > DSP LOAD** shows how busy the sound engine is. LOOP, SOPHIE and MACHINEDRUM voices cost more than
 the stock machines. When it reaches 100 % the audio crackles: use fewer voices.
