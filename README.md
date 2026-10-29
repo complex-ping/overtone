@@ -145,7 +145,11 @@ Keep the volume down the first time it plays.
 
 ## Going back, and recovery
 
-- **Back to Elektron's OS:** send Elektron's `Digitone_II_OS1.12.syx` (inside the .zip) with Transfer, the same way.
+> **Known issue in 1.0:** while Overtone runs, an OS sent with Transfer stops on **PREPARING...**. Nothing is
+> written: switch the Digitone off and on and it starts Overtone as before. Until a fixed version is out, go back with
+> the STARTUP menu below (it doesn't need Overtone to receive anything).
+
+- **Back to Elektron's OS:** use the STARTUP menu below with Elektron's `Digitone_II_OS1.12.syx` (inside the .zip).
 - **If the Digitone doesn't start:**
   1. Hold **[FUNC]** while you switch it on. The STARTUP menu appears.
   2. Press **[TRIG 4]** (OS UPGRADE).
