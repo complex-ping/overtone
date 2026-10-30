@@ -322,7 +322,6 @@ $("#go").onclick = async () => {
     if (got !== p.out_sha256) throw new Error(`The result isn't the tested build (sha256 ${got.slice(0, 16)}…). Nothing to save; please report this on the project page.`);
     out = r.done;
     $("#progress").className = "progress";
-    status($("#buildStatus"), "ok", `<b>Done in ${Math.round((performance.now() - t0) / 1000)} s.</b> It is exactly the tested ${esc(p.title)} (sha256 <code>${got.slice(0, 12)}…</code>).`);
     $("#saveRow").hidden = false;
     $("#save").focus();
   } catch (err) {
