@@ -187,15 +187,14 @@ the stock machines. When it reaches 100 % the audio crackles: use fewer voices.
 
 You need a Digitone II, a computer, a USB cable and **Elektron Transfer**.
 
-1. **Back up** your projects and the +Drive with Elektron Transfer.
-2. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
+1. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
    download **Digitone II OS 1.12** (`Digitone_II_OS1.12_dist.zip`). **Keep this file:** Elektron's page lists only
    the current OS, and you need it to go back or to make another build.
-3. **Make the build** in the **[Overtone builder](https://complex-ping.github.io/overtone/)**: drop the .zip on the
+2. **Make the build** in the **[Overtone builder](https://complex-ping.github.io/overtone/)**: drop the .zip on the
    page and press **Make**. It runs in the browser, with nothing to install and nothing uploaded. It checks that the
    file is Elektron's original OS 1.12, and lets you save the Overtone `.syx` only if it is byte for byte the tested
    build.
-4. **Send it to the Digitone.** Connect it over USB, open Transfer, drag the Overtone `.syx` onto it, answer **YES** on
+3. **Send it to the Digitone.** Connect it over USB, open Transfer, drag the Overtone `.syx` onto it, answer **YES** on
    the Digitone and wait for it to restart.
 
 <details>
