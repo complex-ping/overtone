@@ -252,7 +252,7 @@ work as input.
   an external MIDI clock is not warped by it.
 - **PRE FLTR inserts** use two voices per note on that track.
 - **Heavy machines** (LOOP in STRC mode, P-I, many SOPHIE voices) can push the DSP over 100 %. Watch DSP LOAD.
-- **ENV3 and LFO3** don't exist any more: their storage holds ENV2 and ARP 2.
+- **LFO3** doesn't exist any more: its storage holds ENV2 and ARP 2.
 
 ## How it's made and tested
 
@@ -268,17 +268,6 @@ from Overtone, was checked on the unit.
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
 plus Overtone's own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
 it. It seals the build with the key it derives from your file, as the Digitone expects.
-
-## Versions
-
-- **1.2** (30 Oct 2026): instant pattern switch: [PTN] + [YES] / [NO] turns it on / off; a picked pattern then takes
-  over at the next step, where it would be had it played since PLAY.
-- **1.1** (30 Oct 2026): GROOVE reworked: a second [TEMPO] opens it, presets on F, DRIFT on G (a new random
-  offset every cycle, also a modulation destination), [TEMPO] + [YES] random weights, arrows to edit, the playing step
-  lit. [FUNC] + [TEMPO] is tap tempo again.
-- **1.0.1** (29 Oct 2026): an OS sent with Transfer while Overtone runs now installs (1.0 stopped on Receiving or
-  PREPARING...). Nothing else changed.
-- **1.0** (29 Oct 2026): the first release.
 
 ## Credits
 
