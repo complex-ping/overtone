@@ -185,27 +185,32 @@ the stock machines. When it reaches 100 % the audio crackles: use fewer voices.
 
 ## Install
 
-You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows or Linux), a USB cable and
-**Elektron Transfer**.
+You need a Digitone II, a computer, a USB cable and **Elektron Transfer**.
 
 1. **Back up** your projects and the +Drive with Elektron Transfer.
-2. **Get Python** if you don't have it: [python.org/downloads](https://www.python.org/downloads/). On a Mac, check with
-   `python3 --version` in Terminal.
-3. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
+2. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
    download **Digitone II OS 1.12** (`Digitone_II_OS1.12_dist.zip`). **Keep this file:** Elektron's page lists only
    the current OS, and you need it to go back or to make another build.
-4. **Download Overtone** from [Releases](../../releases) (`overtone-1.1.zip`) and unzip it.
-5. **Make the build.** In a terminal, in the unzipped folder:
-
-   ```bash
-   python3 patcher/patch.py ~/Downloads/Digitone_II_OS1.12_dist.zip
-   ```
-
-   It checks that the file is Elektron's original OS 1.12, rebuilds Overtone from it in 1 to 3 minutes, and saves
-   `Overtone-1.1.syx` next to the .zip, but only if the result is byte for byte the tested build. The .zip, its
-   unzipped folder and the .syx all work as input.
-6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.1.syx` onto it, answer **YES** on
+3. **Make the build** in the **[Overtone builder](https://complex-ping.github.io/overtone/)**: drop the .zip on the
+   page and press **Make**. It runs in the browser, with nothing to install and nothing uploaded. It checks that the
+   file is Elektron's original OS 1.12, and lets you save the Overtone `.syx` only if it is byte for byte the tested
+   build.
+4. **Send it to the Digitone.** Connect it over USB, open Transfer, drag the Overtone `.syx` onto it, answer **YES** on
    the Digitone and wait for it to restart.
+
+<details>
+<summary>Without the browser: the patcher in Python</summary>
+
+With **Python 3.11 or later** ([python.org/downloads](https://www.python.org/downloads/)), download Overtone from
+[Releases](../../releases), unzip it, and in a terminal in the unzipped folder run:
+
+```bash
+python3 patcher/patch.py ~/Downloads/Digitone_II_OS1.12_dist.zip
+```
+
+It makes the same file in 1 to 3 minutes and saves it next to the .zip. The .zip, its unzipped folder and the .syx all
+work as input.
+</details>
 
 ## Going back, and recovery
 
