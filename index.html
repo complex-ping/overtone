@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Overtone Builder</title>
+<meta name="description" content="Make the Overtone firmware for the Digitone II in your browser, from Elektron's own OS 1.12 file.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23161719'/%3E%3Cpath d='M5 18c3-9 5-9 7 0s4 9 6 0 4-9 6 0 3 4 3 4' fill='none' stroke='%234fe0c8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#121314">
+<style>
+:root {
+  --bg: #f3f1ec; --panel: #ffffff; --sunk: #f7f5f1; --line: #dedad2; --text: #1c1c1e; --dim: #67676d;
+  --accent: #0b8577; --accent-ink: #ffffff; --ok: #2c8546; --bad: #c0392b; --bar: #ece8df;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121314; --panel: #1a1b1e; --sunk: #141517; --line: #2d2f34; --text: #ebe9e4; --dim: #9a9ca2;
+    --accent: #4fe0c8; --accent-ink: #04211c; --ok: #5cc27a; --bad: #ef6b5b; --bar: #26282c;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121314; --panel: #1a1b1e; --sunk: #141517; --line: #2d2f34; --text: #ebe9e4; --dim: #9a9ca2;
+  --accent: #4fe0c8; --accent-ink: #04211c; --ok: #5cc27a; --bad: #ef6b5b; --bar: #26282c;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body { margin: 0; background: var(--bg); color: var(--text);
+  font: 16px/1.55 ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 760px; margin: 0 auto; padding: 40px 16px 72px; }
+a { color: var(--accent); }
+header h1 { font: 700 30px/1.15 ui-sans-serif, system-ui, sans-serif; letter-spacing: -.01em; margin: 0 0 8px; }
+header h1 small { font-weight: 500; color: var(--dim); font-size: 18px; margin-left: 6px; }
+header p { margin: 0 0 6px; color: var(--dim); }
+header { margin-bottom: 26px; }
+
+.step { position: relative; background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 20px 22px 22px 72px; margin-bottom: 14px; }
+.step .n { position: absolute; left: 20px; top: 18px; width: 34px; height: 34px; border-radius: 50%;
+  display: grid; place-items: center; font-weight: 700; font-size: 16px; border: 2px solid var(--line); color: var(--dim); }
+.step.active .n { border-color: var(--accent); color: var(--accent); }
+.step.done .n { border-color: var(--ok); background: var(--ok); color: var(--panel); }
+.step.done .n span { display: none; }
+.step.done .n::after { content: "✓"; }
+.step.locked { opacity: .55; }
+.step h2 { font-size: 19px; line-height: 1.3; margin: 4px 0 6px; }
+.step p { margin: 6px 0; }
+.dim { color: var(--dim); font-size: 14px; }
+
+.btn { display: inline-block; text-align: center; font-family: inherit; font-weight: 600; font-size: 16px; line-height: 1;
+  padding: 13px 20px; border-radius: 10px; border: 1px solid var(--line); background: var(--sunk); color: var(--text);
+  cursor: pointer; text-decoration: none; }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn:disabled { opacity: .4; cursor: default; }
+.btn:focus-visible, .drop:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+
+.drop { display: block; margin-top: 14px; border: 2px dashed var(--line); border-radius: 12px; background: var(--sunk);
+  padding: 26px 16px; text-align: center; cursor: pointer; transition: border-color .15s, background .15s; }
+.drop:hover, .drop.over { border-color: var(--accent); }
+.drop b { display: block; font-size: 17px; margin-bottom: 4px; }
+.drop input { display: none; }
+.status { display: none; margin-top: 12px; padding: 12px 14px; border-radius: 10px; font-size: 15px; overflow-wrap: anywhere; }
+.status.show { display: block; }
+.status.ok { background: color-mix(in srgb, var(--ok) 13%, transparent); border: 1px solid color-mix(in srgb, var(--ok) 45%, transparent); }
+.status.bad { background: color-mix(in srgb, var(--bad) 12%, transparent); border: 1px solid color-mix(in srgb, var(--bad) 45%, transparent); }
+.status.info { background: var(--sunk); border: 1px solid var(--line); }
+
+.progress { display: none; margin-top: 16px; }
+.progress.show { display: block; }
+.bar { height: 12px; border-radius: 6px; background: var(--bar); overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 6px; transition: width .4s; }
+.bar.wait i { width: 30%; animation: wait 1.4s ease-in-out infinite; }
+@keyframes wait { 0% { margin-left: -30%; } 100% { margin-left: 100%; } }
+.progress .line { display: flex; justify-content: space-between; gap: 12px; margin-top: 8px; font-size: 14px; color: var(--dim); }
+
+ol.how { margin: 8px 0 0; padding-left: 20px; }
+ol.how li { margin: 6px 0; }
+.key { font: 600 12px/1 ui-monospace, "SF Mono", Consolas, monospace; border: 1px solid var(--line); border-bottom-width: 2px;
+  border-radius: 5px; padding: 2px 5px; white-space: nowrap; }
+details { margin-top: 10px; }
+summary { cursor: pointer; color: var(--accent); font-weight: 600; }
+details ul { margin: 8px 0 0; padding-left: 20px; }
+details li { margin: 5px 0; }
+select { font: inherit; color: var(--text); background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+footer { margin-top: 28px; font-size: 13px; color: var(--dim); }
+code { font: 13px ui-monospace, "SF Mono", Consolas, monospace; overflow-wrap: anywhere; }
+
+@media (max-width: 560px) {
+  main { padding-top: 24px; }
+  header h1 { font-size: 25px; }
+  .step { padding: 64px 16px 18px; }
+  .step .n { left: 16px; top: 16px; }
+  .btn { width: 100%; }
+}
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>Overtone builder <small id="title">Overtone</small></h1>
+    <p>Overtone is custom firmware for the Elektron Digitone II. This page makes it on your computer from Elektron's own
+      OS 1.12 file. Then you send it to the Digitone with Elektron Transfer, like any OS update.</p>
+    <p><a href="https://github.com/complex-ping/overtone#whats-in-it">What's in Overtone</a> ·
+      <a href="https://github.com/complex-ping/overtone">Project page</a></p>
+  </header>
+
+  <section class="step active" id="s1">
+    <div class="n"><span>1</span></div>
+    <h2>Get Elektron's OS 1.12</h2>
+    <p>On Elektron's <a href="https://elektron.se/support-downloads/digitone-ii" target="_blank" rel="noopener">Digitone II
+      download page</a>, download <b>Digitone II OS 1.12</b>. You get <code>Digitone_II_OS1.12_dist.zip</code>.</p>
+  </section>
+
+  <section class="step" id="s2">
+    <div class="n"><span>2</span></div>
+    <h2>Drop it here</h2>
+    <p>The .zip as you downloaded it, or the <code>Digitone_II_OS1.12.syx</code> inside it.</p>
+    <label class="drop" id="drop" tabindex="0">
+      <b>Drop the file here</b>
+      <span class="dim">or click to choose it</span>
+      <input type="file" id="pick" accept=".zip,.syx">
+    </label>
+    <div class="status" id="fileStatus" role="status"></div>
+  </section>
+
+  <section class="step locked" id="s3">
+    <div class="n"><span>3</span></div>
+    <h2>Make Overtone</h2>
+    <p>Takes under a minute. Keep this tab open.</p>
+    <div class="row">
+      <button class="btn primary" id="go" disabled>Make <span class="name">Overtone</span></button>
+      <label class="dim" id="packPick" hidden>Version <select id="pack"></select></label>
+    </div>
+    <div class="progress" id="progress">
+      <div class="bar wait" id="bar"><i></i></div>
+      <div class="line"><span id="phase">Starting…</span><span id="eta"></span></div>
+    </div>
+    <div class="status" id="buildStatus" role="status"></div>
+    <div class="row" id="saveRow" hidden>
+      <button class="btn primary" id="save">Save <span id="outName">the file</span></button>
+    </div>
+  </section>
+
+  <section class="step locked" id="s4">
+    <div class="n"><span>4</span></div>
+    <h2>Send it to the Digitone</h2>
+    <ol class="how">
+      <li>Connect the Digitone II to the computer by USB, switch it on and open
+        <a href="https://elektron.se/support-downloads/transfer" target="_blank" rel="noopener">Elektron Transfer</a>.</li>
+      <li>Drag <b id="outName2">the saved file</b> onto Transfer.</li>
+      <li>Press <span class="key">YES</span> on the Digitone when it asks, then wait until it has restarted.</li>
+    </ol>
+    <details>
+      <summary>Going back, updating, and if it doesn't start</summary>
+      <ul>
+        <li><b>Back to Elektron's OS:</b> send <code>Digitone_II_OS1.12.syx</code> (inside Elektron's .zip) with Transfer
+          the same way.</li>
+        <li><b>A newer Overtone:</b> make it here and send it the same way.</li>
+        <li><b>If the Digitone doesn't start:</b> hold <span class="key">FUNC</span> while switching it on, press
+          <span class="key">TRIG 4</span> (OS UPGRADE), and send <code>Digitone_II_OS1.12.syx</code> from Transfer's
+          LEGACY OS UPGRADE mode over a DIN MIDI cable (USB doesn't work in this menu; it takes about 15 minutes).</li>
+        <li>More in the <a href="https://github.com/complex-ping/overtone#going-back-and-recovery">project's
+          README</a>.</li>
+      </ul>
+    </details>
+  </section>
+
+  <footer>
+    Overtone is made by <a href="https://github.com/complex-ping">complex-ping</a>; it is not made or supported by Elektron.
+    The page runs the project's own patcher (<code>patcher/patch.py</code>) with
+    <a href="https://pyodide.org" target="_blank" rel="noopener">Pyodide</a>, which this page loads once (about 10 MB).
+    Licence: AGPL-3.0-or-later. Elektron and Digitone are trademarks of Elektron Music Machines.
+  </footer>
+</main>
+
+<script>
+const $ = (s) => document.querySelector(s);
+const OS111 = "2af43e65e3d8390b41c9f66222620f8cce027d73ed87db00c80b440f628472e0";
+let packs = [], input = null, out = null, busy = false;
+
+function pack() { return packs.find(p => p.id === $("#pack").value) || packs[0]; }
+function hex(buf) { return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, "0")).join(""); }
+async function sha256(bytes) { return hex(await crypto.subtle.digest("SHA-256", bytes)); }
+function status(el, cls, html) { el.className = "status show " + cls; el.innerHTML = html; }
+function stepState(id, st) { $(id).className = "step " + st; }
+
+function refresh() {
+  const p = pack();
+  document.querySelectorAll(".name").forEach(e => e.textContent = p ? p.title : "Overtone");
+  $("#title").textContent = p ? p.title.replace(/^Overtone /, "") : "";
+  $("#outName").textContent = $("#outName2").textContent = p ? p.out_name : "the file";
+  $("#go").disabled = busy || !input || !p;
+  $("#go").classList.toggle("primary", !out);   // once built, Save is the button to press
+  stepState("#s1", input ? "done" : "active");
+  stepState("#s2", input ? "done" : "active");
+  stepState("#s3", out ? "done" : input ? "active" : "locked");
+  stepState("#s4", out ? "active" : "locked");
+}
+
+fetch("patcher/packs/index.json", { cache: "no-cache" }).then(r => r.json()).then(list => {
+  packs = list;
+  $("#pack").innerHTML = list.map((p, i) => `<option value="${p.id}">${p.title}${i ? "" : " (newest)"}</option>`).join("");
+  $("#packPick").hidden = list.length < 2;
+  refresh();
+}).catch(() => status($("#buildStatus"), "bad", "The list of builds didn't load. Reload the page."));
+$("#pack").onchange = () => { out = null; $("#saveRow").hidden = true; $("#buildStatus").className = "status"; refresh(); };
+
+// The .syx inside Elektron's .zip, read here so the file can be checked the moment it is dropped. Browsers without
+// DecompressionStream skip the check; the patcher checks again when it runs.
+async function syxFromZip(buf) {
+  const v = new DataView(buf), u = new Uint8Array(buf);
+  let e = -1;
+  for (let i = buf.byteLength - 22; i >= Math.max(0, buf.byteLength - 65558); i--)
+    if (v.getUint32(i, true) === 0x06054b50) { e = i; break; }
+  if (e < 0) throw new Error("This .zip file is damaged. Download it again.");
+  const found = [];
+  for (let k = 0, p = v.getUint32(e + 16, true); k < v.getUint16(e + 10, true); k++) {
+    const nl = v.getUint16(p + 28, true), name = new TextDecoder().decode(u.subarray(p + 46, p + 46 + nl));
+    if (/\.syx$/i.test(name) && !name.startsWith("__MACOSX"))
+      found.push({ name, method: v.getUint16(p + 10, true), size: v.getUint32(p + 20, true), at: v.getUint32(p + 42, true) });
+    p += 46 + nl + v.getUint16(p + 30, true) + v.getUint16(p + 32, true);
+  }
+  if (found.length !== 1) throw new Error("This .zip doesn't hold one Digitone OS file (.syx). Is it Elektron's OS 1.12 download?");
+  const f = found[0], start = f.at + 30 + v.getUint16(f.at + 26, true) + v.getUint16(f.at + 28, true);
+  const data = u.subarray(start, start + f.size);
+  if (f.method === 0) return data;
+  if (f.method !== 8 || typeof DecompressionStream === "undefined") return null;
+  const s = new Blob([data]).stream().pipeThrough(new DecompressionStream("deflate-raw"));
+  return new Uint8Array(await new Response(s).arrayBuffer());
+}
+
+async function take(file) {
+  if (busy) return;
+  input = null; out = null; $("#saveRow").hidden = true; $("#buildStatus").className = "status";
+  $("#progress").className = "progress";
+  const st = $("#fileStatus");
+  status(st, "info", "Checking " + esc(file.name) + "…");
+  refresh();
+  try {
+    const bytes = new Uint8Array(await file.arrayBuffer());
+    const zip = /\.zip$/i.test(file.name) || (bytes[0] === 0x50 && bytes[1] === 0x4b);
+    if (!zip && !/\.syx$/i.test(file.name)) throw new Error("This isn't a .zip or .syx file. Drop Elektron's <code>Digitone_II_OS1.12_dist.zip</code>.");
+    const syx = zip ? await syxFromZip(bytes.buffer) : bytes;
+    const p = pack();
+    if (syx && p) {
+      const h = await sha256(syx);
+      if (packs.some(q => q.out_sha256 === h))
+        throw new Error("This is already an Overtone file. Drop Elektron's original OS 1.12 instead.");
+      if (h === OS111)
+        throw new Error("This is OS <b>1.11</b>. Overtone is made from <b>OS 1.12</b>: download that one from Elektron's page.");
+      if (h !== p.stock_sha256)
+        throw new Error("This isn't Elektron's original Digitone II OS 1.12 file (another OS version, another instrument, or a changed file). Download OS 1.12 from Elektron's page again.");
+    }
+    input = { name: zip ? "input.zip" : "input.syx", bytes };
+    status(st, "ok", "<b>" + esc(file.name) + "</b>: Elektron's Digitone II OS 1.12" + (syx ? "" : " (checked when it builds)") + ". Ready.");
+    warm();
+  } catch (err) {
+    status(st, "bad", err.message);
+  }
+  refresh();
+}
+function esc(s) { return s.replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]); }
+
+const drop = $("#drop");
+$("#pick").onchange = () => $("#pick").files[0] && take($("#pick").files[0]);
+drop.onkeydown = (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#pick").click(); } };
+["dragenter", "dragover"].forEach(t => drop.addEventListener(t, (e) => { e.preventDefault(); drop.classList.add("over"); }));
+["dragleave", "drop"].forEach(t => drop.addEventListener(t, () => drop.classList.remove("over")));
+drop.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) take(f); });
+// a file dropped anywhere else on the page goes to the drop box too, rather than the browser opening it
+window.addEventListener("dragover", (e) => e.preventDefault());
+window.addEventListener("drop", (e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) take(f); });
+
+// Python (Pyodide) checks and unpacks the stock file and seals the result: patcher/patch.py itself. The packing in between,
+// the slow part in Python, runs in two JavaScript workers, one per section (the MAIN OS and the DSP program).
+let py = null;
+function warm() {
+  const p = pack();
+  if (py || !p) return;
+  py = new Worker("web/builder-worker.js");   // Python loads while the user reads on
+  py.postMessage({ cmd: "boot", pack: p.id });
+}
+function ask(w, msg, transfer, onMsg) {
+  return new Promise((ok, bad) => {
+    w.onmessage = (e) => {
+      const m = e.data;
+      if (m.error) bad(Object.assign(new Error(m.error), { refused: m.refused }));
+      else if (m.phase !== undefined || m.progress !== undefined || m.booted) onMsg && onMsg(m);
+      else ok(m);
+    };
+    w.onerror = (e) => bad(new Error(e.message || "the builder stopped"));
+    w.postMessage(msg, transfer || []);
+  });
+}
+function phase(t) { $("#phase").textContent = t; }
+
+$("#go").onclick = async () => {
+  const p = pack();
+  if (!p || !input || busy) return;
+  if (!window.crypto || !crypto.subtle) { status($("#buildStatus"), "bad", "This page needs to be opened over https."); return; }
+  busy = true; out = null; $("#saveRow").hidden = true; $("#buildStatus").className = "status";
+  $("#progress").className = "progress show"; $("#bar").className = "bar wait";
+  phase("Loading the builder (about 10 MB, the first time)…");
+  refresh();
+  warm();
+  const t0 = performance.now();
+  const tick = setInterval(() => { $("#eta").textContent = Math.round((performance.now() - t0) / 1000) + " s"; }, 500);
+  const packers = [];
+  try {
+    const prep = await ask(py, { cmd: "prepare", pack: p.id, input: { name: input.name, bytes: input.bytes.slice() } }, null,
+      (m) => m.phase === "unpack" && phase("Unpacking Elektron's OS…"));
+    phase("Packing Overtone…");
+    const streams = {};
+    await Promise.all([3, 7].map(async (sid) => {
+      const w = new Worker("web/pack-worker.js");
+      packers.push(w);
+      streams[sid] = (await ask(w, { data: prep.jobs[sid], depth: prep.depth }, [prep.jobs[sid].buffer])).stream;
+    }));
+    phase("Sealing the file…");
+    const r = await ask(py, { cmd: "finish", streams }, [streams[3].buffer, streams[7].buffer]);
+    const got = await sha256(r.done);
+    if (got !== p.out_sha256) throw new Error(`The result isn't the tested build (sha256 ${got.slice(0, 16)}…). Nothing to save; please report this on the project page.`);
+    out = r.done;
+    $("#progress").className = "progress";
+    status($("#buildStatus"), "ok", `<b>Done in ${Math.round((performance.now() - t0) / 1000)} s.</b> It is exactly the tested ${esc(p.title)} (sha256 <code>${got.slice(0, 12)}…</code>).`);
+    $("#saveRow").hidden = false;
+    $("#save").focus();
+  } catch (err) {
+    $("#progress").className = "progress";
+    status($("#buildStatus"), "bad", (err.refused ? "" : "The build stopped: ") + esc(err.message));
+    if (py) py.terminate();
+    py = null;   // a fresh start next time
+  } finally {
+    packers.forEach(w => w.terminate());
+    clearInterval(tick);
+    busy = false;
+    refresh();
+  }
+};
+
+$("#save").onclick = () => {
+  const p = pack();
+  if (!out || !p) return;
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([out], { type: "application/octet-stream" }));
+  a.download = p.out_name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+};
+</script>
+</body>
+</html>

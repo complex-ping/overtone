@@ -24,7 +24,6 @@ import sys
 import time
 import zipfile
 import zlib
-from concurrent.futures import ProcessPoolExecutor
 
 HERE = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
@@ -40,6 +39,8 @@ class Refused(Exception):
 def packs():
     out = {}
     for p in sorted((HERE / 'packs').glob('*.json')):
+        if p.name == 'index.json':   # the web builder's list (index.html)
+            continue
         d = json.loads(p.read_text())
         out[d['id']] = d
     return out
@@ -70,12 +71,16 @@ def _compress(job):
     from _dnfw.container import section
     plain = aplibpack.pack
     aplibpack.pack = lambda d: plain(d, chain_depth=depth)
-    return section.compress(sid, dest, data)
+    try:
+        return section.compress(sid, dest, data)
+    finally:
+        aplibpack.pack = plain
 
 
-def make(pack, raw, log=print):
+def prepare(pack, raw):
+    """Checks the stock file and returns (firmware, jobs): one job per section to compress. The web builder
+    (index.html) runs the jobs in two browser workers, the command line in two processes."""
     from _dnfw.firmware.load import load
-    from _dnfw.firmware import build
     if hashlib.sha256(raw).hexdigest() != pack['stock_sha256']:
         if hashlib.sha256(raw).hexdigest() == pack['out_sha256']:
             raise Refused('This file is already this build. Give Elektron\'s original OS 1.12 file.')
@@ -91,17 +96,29 @@ def make(pack, raw, log=print):
         for s, o, n in pack['sections'][str(sid)]:
             out += (lit if s == -1 else pool[s])[o:o + n]
         jobs.append((sid, secs[sid].dest, bytes(out), pack['chain_depth']))
-    log('Packing the MAIN OS and the DSP program (1 to 3 minutes)...')
-    t = time.time()
-    with ProcessPoolExecutor(2) as ex:
-        z = dict(zip((3, 7), ex.map(_compress, jobs)))
-    log(f'  done in {time.time() - t:.0f} s')
+    return fw, jobs
+
+
+def finish(pack, fw, z):
+    """Seals the firmware with the compressed sections z ({id: Section}); refuses a result that is not the tested build."""
+    from _dnfw.firmware import build
     out = build.build(fw, z)
     got = hashlib.sha256(out).hexdigest()
     if got != pack['out_sha256']:
         raise Refused(f'The result is not the tested build (sha256 {got}, expected {pack["out_sha256"]}). '
                       'Nothing was saved. Please report this.')
     return out
+
+
+def make(pack, raw, log=print):
+    from concurrent.futures import ProcessPoolExecutor   # here: the web builder's Python has no processes
+    fw, jobs = prepare(pack, raw)
+    log('Packing the MAIN OS and the DSP program (1 to 3 minutes)...')
+    t = time.time()
+    with ProcessPoolExecutor(2) as ex:
+        z = dict(zip((3, 7), ex.map(_compress, jobs)))
+    log(f'  done in {time.time() - t:.0f} s')
+    return finish(pack, fw, z)
 
 
 def main():
