@@ -4,7 +4,7 @@
 
     python3 patch.py Digitone_II_OS1.12_dist.zip          (or the unzipped folder, or the .syx)
     python3 patch.py --list
-    python3 patch.py --pack Overtone-1.0.1 Digitone_II_OS1.12.syx
+    python3 patch.py --pack Overtone-1.1 Digitone_II_OS1.12.syx
 
 Needs Python 3.11 or later and nothing else. It:
   1. checks that the input is Elektron's original Digitone II OS 1.12 (sha256 7e5b8a73...ceb35);

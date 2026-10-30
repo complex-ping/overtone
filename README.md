@@ -5,7 +5,7 @@
 - per-track insert effects;
 - envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale;
 - parameter slides and knobs that show what is playing;
-- GROOVE, a step-by-step timing editor that replaces swing.
+- GROOVE, a step-by-step timing editor that replaces swing, with presets, random grooves and a modulatable drift.
 
 You make the build yourself: the patcher here turns Elektron's own OS 1.12 file into Overtone on your computer, and you
 send the result to the Digitone with Elektron Transfer. No Elektron firmware file is shared here.
@@ -143,22 +143,26 @@ LFO1 can modulate LFO2's knobs. The DEST lists are grouped: SYN, FX, LFO, Fol (f
 
 ### GROOVE
 
-<img src="docs/img/groove-swing.png" width="400" alt="GROOVE with a swing"> <img src="docs/img/groove.png" width="400" alt="GROOVE straight">
+<img src="docs/img/groove-swing.png" width="400" alt="GROOVE: the SW62 preset, playing"> <img src="docs/img/groove.png" width="400" alt="GROOVE: a random groove with DRIFT">
 
-**[FUNC] + [TEMPO]** opens GROOVE. It replaces swing: you give each step of a cycle a **weight**, and the cycle keeps
-its length, so the bar stays in time.
-- **LEVEL** moves the pointer, **E** sets that step's weight (1–99, 24 = straight), and **H** sets the cycle's length
-  (1–16 steps). Knobs move one value per detent, four when pushed.
-- The line above the bars shows how long the step lasts compared with straight (×1.32 on the left), and the top bar shows
-  the cycle, each step as wide as its time.
+**[TEMPO]** opens the tempo screen; **[TEMPO] again** switches to GROOVE, and once more back to the tempo screen.
+GROOVE replaces swing: each step of a cycle gets a **weight**, and the cycle keeps its length, so the bar stays in time.
+- **LEVEL** or **LEFT / RIGHT** move the pointer one step. **E** sets that step's weight (1–99, 24 = straight); its label
+  shows how long the step lasts compared with straight (×1.50). **UP / DOWN** change the weight by one; held, they repeat.
+- **F** picks a preset: STRT, SW54 / SW58 / SW62 / SW66 / SW71 (16th swing), 8S58 / 8S66 (8th swing), PUSH (off-beats
+  early), SHFL, LAZY and QUIN. Editing a weight or the length shows USER.
+- **G** sets **DRIFT** (0–99): every cycle each weight moves by a new random amount, while the cycle's start stays in
+  time. DRIFT is also a modulation destination ("Groove Drift", at the end of the DEST lists) for the LFOs, envelope
+  followers and arps.
+- **H** sets the cycle's length (1–16 steps).
+- **Hold [TEMPO] and press [YES]** for random weights (the length stays). Release [TEMPO] and hold it again for another.
+- The top row shows the cycle as it plays, each step a box as wide as its time; the playing step's box is filled.
 - A cycle starts again at the pattern's start. GROOVE times every track and the arpeggiators, and it is saved with the
   pattern.
-- **Examples:** classic swing: LEN 2, weights 32 / 16. A shuffle or triplet feel: LEN 3 or 6 with uneven weights.
-  Straight (the default): every weight 24.
 
 <img src="docs/img/tempo.png" width="400" alt="TEMPO screen">
 
-**[TEMPO]** shows the tempo screen without SWING. Tap tempo is gone ([FUNC] + [TEMPO] opens GROOVE).
+The tempo screen has no SWING. **[FUNC] + [TEMPO]** is tap tempo, as on Elektron's OS.
 
 ### Parameter slides
 
@@ -190,7 +194,7 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
 3. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
    download **Digitone II OS 1.12** (`Digitone_II_OS1.12_dist.zip`). **Keep this file:** Elektron's page lists only
    the current OS, and you need it to go back or to make another build.
-4. **Download Overtone** from [Releases](../../releases) (`overtone-1.0.1.zip`) and unzip it.
+4. **Download Overtone** from [Releases](../../releases) (`overtone-1.1.zip`) and unzip it.
 5. **Make the build.** In a terminal, in the unzipped folder:
 
    ```bash
@@ -198,9 +202,9 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
    ```
 
    It checks that the file is Elektron's original OS 1.12, rebuilds Overtone from it in 1 to 3 minutes, and saves
-   `Overtone-1.0.1.syx` next to the .zip, but only if the result is byte for byte the tested build. The .zip, its
+   `Overtone-1.1.syx` next to the .zip, but only if the result is byte for byte the tested build. The .zip, its
    unzipped folder and the .syx all work as input.
-6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.0.1.syx` onto it, answer **YES** on
+6. **Send it to the Digitone.** Connect it over USB, open Transfer, drag `Overtone-1.1.syx` onto it, answer **YES** on
    the Digitone and wait for it to restart.
 
 ## Going back, and recovery
@@ -209,8 +213,8 @@ You need a Digitone II, a computer with **Python 3.11 or later** (macOS, Windows
   Overtone installs it by itself, without asking for YES.
 - **Updating Overtone:** send the new build with Transfer the same way.
 - **On Overtone 1.0:** an OS sent with Transfer stops on **Receiving** or **PREPARING...** and nothing is written:
-  switch the Digitone off and on. To get to 1.0.1, go back to Elektron's OS with the STARTUP menu below, then send
-  1.0.1 with Transfer.
+  switch the Digitone off and on. To update from 1.0, go back to Elektron's OS with the STARTUP menu below, then
+  send the new build with Transfer.
 - **If the Digitone doesn't start:**
   1. Hold **[FUNC]** while you switch it on. The STARTUP menu appears.
   2. Press **[TRIG 4]** (OS UPGRADE).
@@ -245,7 +249,7 @@ about 160 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.0.1 passed every check and is played on a Digitone II. Installing with Transfer, from Elektron's OS and
+Overtone 1.1 is played on a Digitone II; its tested base passed every check. Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
@@ -254,6 +258,9 @@ it. It seals the build with the key it derives from your file, as the Digitone e
 
 ## Versions
 
+- **1.1** (30 Oct 2026): GROOVE reworked: a second [TEMPO] opens it, presets on F, DRIFT on G (a new random
+  offset every cycle, also a modulation destination), [TEMPO] + [YES] random weights, arrows to edit, the playing step
+  lit. [FUNC] + [TEMPO] is tap tempo again.
 - **1.0.1** (29 Oct 2026): an OS sent with Transfer while Overtone runs now installs (1.0 stopped on Receiving or
   PREPARING...). Nothing else changed.
 - **1.0** (29 Oct 2026): the first release.
