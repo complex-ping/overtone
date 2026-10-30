@@ -5,7 +5,8 @@
 - per-track insert effects;
 - envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale;
 - parameter slides and knobs that show what is playing;
-- GROOVE, a step-by-step timing editor that replaces swing, with presets, random grooves and a modulatable drift.
+- GROOVE, a step-by-step timing editor that replaces swing, with presets, random grooves and a modulatable drift;
+- instant pattern switching that keeps the place in the bar.
 
 You make the build yourself: the patcher here turns Elektron's own OS 1.12 file into Overtone on your computer, and you
 send the result to the Digitone with Elektron Transfer. No Elektron firmware file is shared here.
@@ -164,6 +165,14 @@ GROOVE replaces swing: each step of a cycle gets a **weight**, and the cycle kee
 
 The tempo screen has no SWING. **[FUNC] + [TEMPO]** is tap tempo, as on Elektron's OS.
 
+### Instant pattern switch
+
+Hold **[PTN]** and press **[YES]** to turn it on, **[NO]** to turn it off; a message shows which for about a second, and
+you can press them again while [PTN] is still held. While it is on, a pattern picked with **[PTN] + [TRIG]** takes over
+at the next step instead of at the end of the playing pattern, at the place it would have reached had it played since
+PLAY: a 16-step pattern picked on step 21 starts at its step 6, so the bar stays in place. Chains, songs and program
+changes still change at the pattern's end. The setting is saved with the project.
+
 ### Parameter slides
 
 On **TRIG page 2**, **SLD** turns on a slide for the trig and **SLEN** sets its length, in steps. Every parameter the trig
@@ -253,7 +262,7 @@ about 160 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.1 is played on a Digitone II; its tested base passed every check. Installing with Transfer, from Elektron's OS and
+Overtone 1.2 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
@@ -262,6 +271,8 @@ it. It seals the build with the key it derives from your file, as the Digitone e
 
 ## Versions
 
+- **1.2** (30 Oct 2026): instant pattern switch: [PTN] + [YES] / [NO] turns it on / off; a picked pattern then takes
+  over at the next step, where it would be had it played since PLAY.
 - **1.1** (30 Oct 2026): GROOVE reworked: a second [TEMPO] opens it, presets on F, DRIFT on G (a new random
   offset every cycle, also a modulation destination), [TEMPO] + [YES] random weights, arrows to edit, the playing step
   lit. [FUNC] + [TEMPO] is tap tempo again.
