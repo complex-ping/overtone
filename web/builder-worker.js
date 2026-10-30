@@ -29,10 +29,14 @@ function boot(pack) { return booting || (booting = load(pack)); }
 async function load(pack) {
   py = await loadPyodide({ indexURL: PYODIDE });
   const base = new URL("../patcher/", self.location.href);
-  const got = await Promise.all([...FILES, "packs/" + pack + ".json"].map(async (f) => {
-    const r = await fetch(new URL(f, base), { cache: "no-cache" });
-    if (!r.ok) throw new Error("could not fetch patcher/" + f + " (" + r.status + ")");
-    return [f, new Uint8Array(await r.arrayBuffer())];
+  // four at a time: a small server (python3 -m http.server queues 5 connections) refuses two dozen at once
+  const todo = [...FILES, "packs/" + pack + ".json"], got = [];
+  await Promise.all([0, 1, 2, 3].map(async () => {
+    for (let f; (f = todo.shift()) !== undefined;) {
+      const r = await fetch(new URL(f, base), { cache: "no-cache" });
+      if (!r.ok) throw new Error("could not fetch patcher/" + f + " (" + r.status + ")");
+      got.push([f, new Uint8Array(await r.arrayBuffer())]);
+    }
   }));
   for (const [f, bytes] of got) {
     py.FS.mkdirTree((ROOT + "/" + f).replace(/\/[^/]*$/, ""));
