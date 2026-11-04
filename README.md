@@ -138,9 +138,10 @@ to the LFOs.
 
 ### Cross-modulation
 
-Each sound has two LFOs (**[MOD]**, UP / DOWN), two envelope followers and two arps. Every continuous knob of each of
+Each sound has its LFOs (**[MOD]**, UP / DOWN), two envelope followers and two arps. Every continuous knob of each of
 them is a destination for the others: for example, LFO1 can wobble ARP 1's speed, ARP 2 can step ENV1's depth, and
-LFO1 can modulate LFO2's knobs. The DEST lists are grouped: SYN, FX, LFO, Fol (followers), ARP.
+LFO1 can modulate LFO2's knobs. No modulator targets itself. In the DEST lists, each LFO, follower and arp has its
+own group after SYN and FX.
 
 ### GROOVE
 
@@ -240,7 +241,7 @@ work as input.
 
 - **Digitone II, OS 1.12 only.** The patcher refuses any other file.
 - **Projects** stay in Elektron's format. Overtone's settings live in spare space in the sound, the pattern's lock table
-  and values the stock OS doesn't use. **LFO 3's storage holds ARP 2:** a sound that used LFO 3 loses it.
+  and values the stock OS doesn't use.
 - **Swing** is gone. A project's saved swing is ignored, and GROOVE takes its place.
 - **Opening Overtone projects on Elektron's OS** is not tested. Keep a copy.
 - **An OS sent over USB installs without a confirmation** on the unit (Transfer included).
@@ -252,7 +253,6 @@ work as input.
   an external MIDI clock is not warped by it.
 - **PRE FLTR inserts** use two voices per note on that track.
 - **Heavy machines** (LOOP in STRC mode, P-I, many SOPHIE voices) can push the DSP over 100 %. Watch DSP LOAD.
-- **LFO3** doesn't exist any more: its storage holds ENV2 and ARP 2.
 
 ## How it's made and tested
 
@@ -262,7 +262,7 @@ about 160 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.2 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
+Overtone 1.3 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
