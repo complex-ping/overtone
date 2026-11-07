@@ -13,6 +13,8 @@ send the result to the Digitone with Elektron Transfer. No Elektron firmware fil
 
 **Not made or supported by Elektron.**
 
+<a href="https://buymeacoffee.com/complexping"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy me a coffee" height="40"></a>
+
 - [What's in it](#whats-in-it)
 - [Install](#install)
 - [Going back, and recovery](#going-back-and-recovery)
