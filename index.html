@@ -82,6 +82,9 @@ summary { cursor: pointer; color: var(--accent); font-weight: 600; }
 details ul { margin: 8px 0 0; padding-left: 20px; }
 details li { margin: 5px 0; }
 select { font: inherit; color: var(--text); background: var(--sunk); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.news { margin-top: 28px; padding: 18px 22px; border: 1px solid var(--line); border-radius: 14px; }
+.news h2 { font-size: 17px; margin: 0 0 4px; }
+.news p { margin: 6px 0; }
 footer { margin-top: 28px; font-size: 13px; color: var(--dim); }
 code { font: 13px ui-monospace, "SF Mono", Consolas, monospace; overflow-wrap: anywhere; }
 
@@ -163,6 +166,20 @@ code { font: 13px ui-monospace, "SF Mono", Consolas, monospace; overflow-wrap: a
           README</a>.</li>
       </ul>
     </details>
+  </section>
+
+  <section class="news" id="news">
+    <h2>Get an email when a new version is out</h2>
+    <p class="dim">GitHub sends it, with a free GitHub account.</p>
+    <ol class="how">
+      <li>Open Overtone's <a href="https://github.com/complex-ping/overtone/subscription" target="_blank" rel="noopener">Watch
+        settings</a> (sign in if GitHub asks), choose <b>Custom</b>, tick <b>Releases</b> and save.</li>
+      <li>In GitHub's <a href="https://github.com/settings/notifications" target="_blank" rel="noopener">notification
+        settings</a>, under <b>Watching</b>, make sure <b>Email</b> is ticked.</li>
+    </ol>
+    <p class="dim">You get one email per release. To stop, open the same Watch settings and choose <b>Participating and
+      @mentions</b>. Without a GitHub account, follow the <a href="https://github.com/complex-ping/overtone/releases.atom">release
+      feed</a> in a feed reader.</p>
   </section>
 
   <footer>
