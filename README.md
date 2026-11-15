@@ -54,21 +54,29 @@ Three of the **Machinedrum's** synthesis families in one machine, ported from it
 ### LOOP
 
 <img src="docs/img/loop-1.png" width="400" alt="LOOP page 1"> <img src="docs/img/loop-2.png" width="400" alt="LOOP page 2">
+<img src="docs/img/custom-1.png" width="400" alt="CUSTOM SOURCE: tracks"> <img src="docs/img/custom-2.png" width="400" alt="CUSTOM SOURCE: inputs, send effects, USB">
 
 A looper on a synth track, after the Machinedrum's RAM machines. It records all the time (8 seconds per track, stereo).
 A trig plays what it has, at the trig's pitch. Selecting LOOP on an empty track puts a 16-step trig on step 1.
 - **Page 1:**
-  - **SRC:** what it records: a track (**T1**–**T16**), **MAIN** (the mix) or **IN** (the audio inputs, after the
-    external mixer), or **OFF** (freezes the buffer).
-  - **LEN:** the take's length. **GAIN**, and **FDBK** (overdub).
-  - **MIX:** crossfades the source into the loop. **INS:** **MIX** replaces the source, **LAYR** plays the loop on top
-    of it.
+  - **SRC:** what it records: a track (**T1**–**T16**), **MAIN** (the mix, the audio inputs and USB in), **IN** (the
+    audio inputs, after the external mixer), **USB** (USB in, at its USB TO MAIN level), **CUST** (your own choice, see
+    below), or **OFF** (keeps the buffer: it stays in time with the pattern, so a source turned back on lands on the beat).
+    SRC can be p-locked; the knob shows the source while you lock it.
+  - **Push A** opens **CUSTOM SOURCE**, the same dialog as AUDIO ROUTING: pick any tracks with the trigs, and on page 2
+    ([DOWN]) the inputs, the send effects (**DL RV CH**) and **USB**. Everything is off at first. [YES] or [NO] closes
+    it and SRC reads **CUST**. The choice is saved with the sound.
+  - **LEN:** the take's length. Hold **[FUNC]** while turning to step through 4, 8, 16, 32, 48 … 128 steps. **GAIN**,
+    and **FDBK** (overdub).
+  - **MIX:** crossfades the source into the loop (tracks, inputs and USB fade; send effects are recorded but stay
+    audible). **INS:** **MIX** replaces the source, **LAYR** plays the loop on top of it.
   - **SLCE:** cuts the take into slices, played by note (C4 = the first slice). **SNAP:** start and end move in steps.
 - **Page 2 ([SYN] again): the buffer.** The waveform, where it records and where it plays. **STRT END PTCH DIR** /
   **XFAD LOOP MODE SPED**.
   - **MODE TAPE:** speed follows pitch. **STRC:** time-stretch, so pitch (**PTCH**, ±36 semitones) and speed (**SPED**)
     are separate.
   - Push **A** or **B** to link start and end: the chain icon joins and END becomes the window size.
+  - **END** below **STRT** plays the window the other way round (FWD plays backwards, REV forwards).
   - Hold **[FUNC]** while turning **SPED** to step through ratios (×1, ×1.5, ×2 …), or **PTCH** to step through fifths
     and octaves.
 
@@ -78,7 +86,8 @@ A trig plays what it has, at the trig's pitch. Selecting LOOP on an empty track 
 
 A machine whose sound is **another track's output**, sent through this track's own overdrive, filter, amp, pan and
 insert.
-- **SRC:** the source track (by default the one on the left).
+- **SRC:** the source track (by default the one on the left), or **CUST**: push **A** for the CUSTOM SOURCE dialog,
+  as on LOOP.
 - **GAIN:** the level (64 = unchanged).
 - **MIX:** crossfades from the source to THRU. At 127 only THRU is heard, including the source's delay and reverb sends.
 - **MONO:** **STER** (stereo) or **MONO**.
