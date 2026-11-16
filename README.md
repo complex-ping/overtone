@@ -3,7 +3,8 @@
 **Overtone** is custom firmware for the **Elektron Digitone II**, built on OS 1.12. It adds:
 - four new machines: **SOPHIE**, **MACHINEDRUM**, **LOOP** and **THRU**;
 - per-track insert effects;
-- envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale;
+- envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale, on
+  audio and MIDI tracks;
 - parameter slides and knobs that show what is playing;
 - GROOVE, a step-by-step timing editor that replaces swing, with presets, random grooves and a modulatable drift;
 - instant pattern switching that keeps the place in the bar.
@@ -120,7 +121,7 @@ FLNG is an original design. PHSR, CHOR and REVB are ports of the Monomachine's e
 
 Two followers per sound. On a **[MOD]** page press **RIGHT** for ENV1 (UP / DOWN for ENV2), and **LEFT** to go back
 to the LFOs.
-- **SRC:** the track it listens to (by default its own).
+- **SRC:** the track it listens to (by default its own), **MAIN** (all tracks) or **IN** (the audio inputs).
 - **ATK** and **DEC:** how fast it follows.
 - **DEST:** what it moves (any parameter, as with LFO DEST).
 - **IN** and **OUT:** meters of the input and output levels; turning them sets the gain.
@@ -153,6 +154,15 @@ Each sound has its LFOs (**[MOD]**, UP / DOWN), two envelope followers and two a
 them is a destination for the others: for example, LFO1 can wobble ARP 1's speed, ARP 2 can step ENV1's depth, and
 LFO1 can modulate LFO2's knobs. No modulator targets itself. In the DEST lists, each LFO, follower and arp has its
 own group after SYN and FX.
+
+### Arps, LFOs and followers on MIDI tracks
+
+A MIDI track has both arps, its LFOs and both envelope followers, to play and modulate external gear:
+- **ARP 1** on PITCH sends its notes over MIDI, in the keyboard scale, with each step's length as the note length.
+- Every DEST list holds the MIDI track's values (**PB**, **AT**, **MW**, **BC**, **VAL1**–**VAL16**) and the knobs of the
+  LFOs, arps and followers. Modulation on a MIDI value is sent as CC (a value that is OFF sends nothing, as on Elektron's OS).
+- The LFOs can modulate the arp and follower knobs, as on audio tracks.
+- The followers listen to another track, MAIN or IN (the default on a MIDI track) and are saved with the sound.
 
 ### GROOVE
 
@@ -189,7 +199,7 @@ changes still change at the pattern's end. The setting is saved with the project
 
 On **TRIG page 2**, **SLD** turns on a slide for the trig and **SLEN** sets its length, in steps. Every parameter the trig
 changes (its p-locks, or the sound's values) glides from where the track was to the new value, insert effects included.
-Turning a knob by hand acts at once.
+A lock trig slides too, so locks can glide without playing a new note. Turning a knob by hand acts at once.
 
 ### Knobs that show what is playing
 
