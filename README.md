@@ -121,7 +121,9 @@ FLNG is an original design. PHSR, CHOR and REVB are ports of the Monomachine's e
 
 Two followers per sound. On a **[MOD]** page press **RIGHT** for ENV1 (UP / DOWN for ENV2), and **LEFT** to go back
 to the LFOs.
-- **SRC:** the track it listens to (by default its own), **MAIN** (all tracks) or **IN** (the audio inputs).
+- **SRC:** the track it listens to (by default its own), **MAIN** (all tracks), **IN** (the audio inputs), **USB** (the
+  USB audio input) or **CUST**: push the SRC knob to choose any mix of tracks, IN, the delay, reverb and chorus returns and
+  USB in the CUSTOM SOURCE window (as on LOOP); the follower listens to all of them together.
 - **ATK** and **DEC:** how fast it follows.
 - **DEST:** what it moves (any parameter, as with LFO DEST).
 - **IN** and **OUT:** meters of the input and output levels; turning them sets the gain.
@@ -142,6 +144,12 @@ to the LFOs.
   - **UP / DOWN** mutes or unmutes the selected step.
 - **ARP 2** is a step modulator: it plays no notes. It restarts at every trig and moves its DEST by each step's
   offset × DEP. On PITCH it adds scale degrees to ARP 1's notes.
+- **MODE FREE** (after CYCL), on both arps: the arp runs like a sequencer from the pattern's start and restarts at every
+  pattern loop; trigs don't restart it. ARP 1 FREE plays without any trig, from the track's default note; a trig doesn't
+  sound but moves the arp to its note, and its p-locks apply to the arp. Switched on during playback it starts at once, in
+  time with the pattern.
+- **SPEED** goes up to **1/128**, **1/128Q** and **1/128T**.
+- A dotted line under the step grid shows the step playing; on the selected step the cursor turns dotted.
 - **Keys in the ARP menu:** tap **[ARP]** to switch between ARP 1 and ARP 2. Hold **[ARP]** and press **[YES]** to
   randomize the shown arp. **[FUNC] + [ARP]** or a page key closes the menu.
 - **Per trig:** in GRID RECORDING, hold a trig and turn the ARP knobs. That trig's arp uses the locked values, so, for
@@ -238,7 +246,7 @@ With **Python 3.11 or later** ([python.org/downloads](https://www.python.org/dow
 python3 patcher/patch.py ~/Downloads/Digitone_II_OS1.12_dist.zip
 ```
 
-It makes the same file in 1 to 3 minutes and saves it next to the .zip. The .zip, its unzipped folder and the .syx all
+It makes the same file in a few seconds and saves it next to the .zip. The .zip, its unzipped folder and the .syx all
 work as input.
 </details>
 
@@ -279,16 +287,17 @@ work as input.
 
 Overtone was developed with [Claude Code](https://claude.com/claude-code) and the
 [digitone-2-modding-skill](https://github.com/complex-ping/digitone-2-modding-skill). Every build runs a suite of
-about 160 checks in two emulators before it reaches a unit:
+about 190 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.4 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
+Overtone 1.7 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
 plus Overtone's own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
-it. It seals the build with the key it derives from your file, as the Digitone expects.
+it. It also holds the packer's choices for the build (which bytes repeat earlier ones, and from where; no
+bytes of the OS), so it packs the tested file byte for byte in seconds. It seals the build with the key it derives from your file, as the Digitone expects.
 
 ## Credits
 

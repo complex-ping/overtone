@@ -1,9 +1,9 @@
 [
  {
-  "id": "Overtone-1.6",
-  "title": "Overtone 1.6",
+  "id": "Overtone-1.7",
+  "title": "Overtone 1.7",
   "stock_sha256": "7e5b8a733d4ab1fdf7e5d22757f7d8eddaa3cbf71d0858874a791844c02ceb35",
-  "out_sha256": "b968d90f9ce066b1df72ff799895f8d8ebff92b7e96ec3f90a1b962232d444a5",
-  "out_name": "Overtone-1.6.syx"
+  "out_sha256": "a7eb4371fda2787cb8c3855a122e9500f23cf7f5279ab714d7eeaea278dc232d",
+  "out_name": "Overtone-1.7.syx"
  }
 ]

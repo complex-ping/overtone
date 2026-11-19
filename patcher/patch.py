@@ -65,12 +65,64 @@ def read_input(path):
     return path.read_bytes(), path.parent
 
 
+def replay(d, parse):
+    """The tested build's stream for one section, from the pack's parse (1.7 on: the build's optimal-parse packer recorded
+    as a varint path -- a literal run of n: 2n; a match of L at offset o: 2L + 1, then o -- holding no Elektron bytes):
+    written over the decoded section d with the aPLib codes of _dnfw/codec/aplibpack.py."""
+    out, tag, bits = bytearray(), 0, 0
+
+    def bit(v):
+        nonlocal tag, bits
+        if not bits:
+            tag = len(out); out.append(0); bits = 8
+        if v:
+            out[tag] |= 1 << (bits - 1)
+        bits -= 1
+
+    def gam(v):
+        for i in range(v.bit_length() - 2, -1, -1):
+            bit(v >> i & 1); bit(i == 0)
+
+    i = p = 0
+    last = 1
+    while p < len(parse):
+        v = s = 0
+        while True:
+            b = parse[p]; p += 1; v |= (b & 0x7f) << s; s += 7
+            if b < 0x80:
+                break
+        if not v & 1:
+            for _ in range(v >> 1):
+                bit(1); out.append(d[i]); i += 1
+            continue
+        L, o, s = v >> 1, 0, 0
+        while True:
+            b = parse[p]; p += 1; o |= (b & 0x7f) << s; s += 7
+            if b < 0x80:
+                break
+        bit(0)
+        if o == last:
+            gam(2)
+        else:
+            raw = o + 767; gam(raw >> 8); out.append(raw & 0xff); last = o
+        base = L - 1 - (o > 3328)
+        if base <= 3:
+            bit(base >> 1); bit(base & 1)
+        else:
+            bit(0); bit(0); gam(base - 2)
+        i += L
+    if i != len(d):
+        raise Refused('The pack\'s parse does not fit this file. Please report this.')
+    bit(0); gam(0x1000002); out.append(0xff)
+    return bytes(out)
+
+
 def _compress(job):
-    sid, dest, data, depth = job
+    sid, dest, data, depth, parse = job
     from _dnfw.codec import aplibpack
     from _dnfw.container import section
     plain = aplibpack.pack
-    aplibpack.pack = lambda d: plain(d, chain_depth=depth)
+    aplibpack.pack = (lambda d: replay(d, parse)) if parse else (lambda d: plain(d, chain_depth=depth))
     try:
         return section.compress(sid, dest, data)
     finally:
@@ -95,7 +147,9 @@ def prepare(pack, raw):
         out = bytearray()
         for s, o, n in pack['sections'][str(sid)]:
             out += (lit if s == -1 else pool[s])[o:o + n]
-        jobs.append((sid, secs[sid].dest, bytes(out), pack['chain_depth']))
+        parse = pack.get('parse', {}).get(str(sid))
+        jobs.append((sid, secs[sid].dest, bytes(out), pack['chain_depth'],
+                     zlib.decompress(base64.b64decode(parse)) if parse else None))
     return fw, jobs
 
 
@@ -113,7 +167,7 @@ def finish(pack, fw, z):
 def make(pack, raw, log=print):
     from concurrent.futures import ProcessPoolExecutor   # here: the web builder's Python has no processes
     fw, jobs = prepare(pack, raw)
-    log('Packing the MAIN OS and the DSP program (1 to 3 minutes)...')
+    log('Packing the MAIN OS and the DSP program' + (' (1 to 3 minutes)...' if not pack.get('parse') else '...'))
     t = time.time()
     with ProcessPoolExecutor(2) as ex:
         z = dict(zip((3, 7), ex.map(_compress, jobs)))

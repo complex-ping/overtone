@@ -3,7 +3,9 @@
  * packs ten times slower than this. Same greedy parse with one-position lazy lookahead, same cost model, same 2-byte hash
  * chains, same window and match cap, so the stream is byte for byte the Python one; the page checks the finished file's
  * sha256 against the tested build all the same.
- * In:  {data: Uint8Array, depth}  ->  {progress: 0..1} ... then {stream: Uint8Array} */
+ * In:  {data: Uint8Array, depth, parse?: Uint8Array}  ->  {progress: 0..1} ... then {stream: Uint8Array}
+ * 1.7 on: a pack carries the build's own parse (patcher/patch.py replay: a literal run of n = varint 2n, a match of L at
+ * offset o = varint 2L + 1, then o); with one the stream is replayed from it, not searched -- the tested build byte for byte. */
 
 const OFFSET_BIAS = 767, REUSE_GAMMA = 2, FAR_THRESHOLD = 3328, MIN_MATCH = 2;   // codec/aplib.py
 const MAX_MATCH = 2048, PACK_MAX_OFFSET = (1 << 20) - 4096;                       // codec/limits.py
@@ -104,9 +106,36 @@ function pack(d, depth, progress) {
   return w.out.slice(0, w.n);
 }
 
+function replay(d, parse, progress) {
+  const w = new Writer(d.length);
+  let i = 0, p = 0, last = 1, nextReport = 0;
+  const step1 = Math.max(1, Math.floor(parse.length / 100));
+  const varint = () => {
+    let v = 0, s = 0, b;
+    do { b = parse[p++]; v += (b & 0x7f) * 2 ** s; s += 7; } while (b >= 0x80);
+    return v;
+  };
+  while (p < parse.length) {
+    if (progress && p >= nextReport) { progress(p / parse.length); nextReport = p + step1; }
+    const v = varint();
+    if (v % 2 === 0) {
+      for (let k = v / 2; k > 0; k--) w.literal(d[i++]);
+      continue;
+    }
+    const length = (v - 1) / 2, offset = varint();
+    last = w.match(offset, length, last);
+    i += length;
+  }
+  if (i !== d.length) throw new Error("The pack's parse does not fit this file. Please report this on the project page.");
+  w.end();
+  return w.out.slice(0, w.n);
+}
+
 if (typeof WorkerGlobalScope !== "undefined" && self instanceof WorkerGlobalScope) {
   self.onmessage = (e) => {
-    const stream = pack(e.data.data, e.data.depth, (f) => self.postMessage({ progress: f }));
+    const progress = (f) => self.postMessage({ progress: f });
+    const stream = e.data.parse && e.data.parse.length ? replay(e.data.data, e.data.parse, progress)
+                                                       : pack(e.data.data, e.data.depth, progress);
     self.postMessage({ progress: 1 });
     self.postMessage({ stream }, [stream.buffer]);
   };

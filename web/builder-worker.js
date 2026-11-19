@@ -70,10 +70,13 @@ PK = patch.packs()[PACK]
 raw, _ = patch.read_input(pathlib.Path(INPUT))
 FW, JOBS = patch.prepare(PK, raw)
 J3, J7 = (to_js(next(j[2] for j in JOBS if j[0] == sid)) for sid in (3, 7))
+P3, P7 = (to_js(next(j[4] or b'' for j in JOBS if j[0] == sid)) for sid in (3, 7))   # (1.7 on: the build's parse)
 DEPTH = PK['chain_depth']
 `);
       const jobs = { 3: py.globals.get("J3").slice(), 7: py.globals.get("J7").slice() };
-      self.postMessage({ jobs, depth: py.globals.get("DEPTH") }, [jobs[3].buffer, jobs[7].buffer]);
+      const parse = { 3: py.globals.get("P3").slice(), 7: py.globals.get("P7").slice() };
+      self.postMessage({ jobs, parse, depth: py.globals.get("DEPTH") },
+                       [jobs[3].buffer, jobs[7].buffer, parse[3].buffer, parse[7].buffer]);
     } else if (m.cmd === "finish") {
       py.globals.set("S3", m.streams[3]);
       py.globals.set("S7", m.streams[7]);

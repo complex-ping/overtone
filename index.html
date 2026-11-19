@@ -336,7 +336,8 @@ $("#go").onclick = async () => {
     await Promise.all([3, 7].map(async (sid) => {
       const w = new Worker("web/pack-worker.js");
       packers.push(w);
-      streams[sid] = (await ask(w, { data: prep.jobs[sid], depth: prep.depth }, [prep.jobs[sid].buffer])).stream;
+      streams[sid] = (await ask(w, { data: prep.jobs[sid], depth: prep.depth, parse: prep.parse[sid] },
+                                [prep.jobs[sid].buffer, prep.parse[sid].buffer])).stream;
     }));
     phase("Sealing the file…");
     const r = await ask(py, { cmd: "finish", streams }, [streams[3].buffer, streams[7].buffer]);
