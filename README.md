@@ -180,8 +180,20 @@ A MIDI track has both arps, its LFOs and both envelope followers, to play and mo
 GROOVE replaces swing: each step of a cycle gets a **weight**, and the cycle keeps its length, so the bar stays in time.
 - **LEVEL** or **LEFT / RIGHT** move the pointer one step. **E** sets that step's weight (1–99, 24 = straight); its label
   shows how long the step lasts compared with straight (×1.50). **UP / DOWN** change the weight by one; held, they repeat.
-- **F** picks a preset: STRT, SW54 / SW58 / SW62 / SW66 / SW71 (16th swing), 8S58 / 8S66 (8th swing), PUSH (off-beats
-  early), SHFL, LAZY and QUIN. Editing a weight or the length shows USER.
+- **F** picks a preset. Editing a weight or the length shows USER.
+
+  | Preset | Weights | What it is |
+  |---|---|---|
+  | STRT | 24 × 16 | straight, no swing |
+  | SW54 / SW58 / SW62 / SW66 / SW71 | 27 23 / 29 21 / 31 19 / 33 17 / 71 29 | 16th swing, exactly Elektron's SWING 54 / 58 / 62 / 66 / 71 % |
+  | 8S58 / 8S66 | 29 29 21 21 / 33 33 17 17 | the same swing on 8ths |
+  | PUSH | 20 28 | off-beat 16ths early |
+  | SHFL | 32 16 24 | a 3-step shuffle that runs across the beat |
+  | LAZY | 24 27 24 21 | the 3rd and 4th 16th of each beat laid back |
+  | QUIN | 30 20 | 60 % swing (3:2) |
+
+  Any Elektron swing value: LEN 2, step 1 = half the %, step 2 = 50 minus that (60 % = 30 20; an odd % such as 57 = 57 43).
+  Elektron's swing only moves trigs marked as swing trigs; GROOVE moves every step, the arpeggiators and micro timing too.
 - **G** sets **DRIFT** (0–99): every cycle each weight moves by a new random amount, while the cycle's start stays in
   time. DRIFT is also a modulation destination ("Groove Drift", at the end of the DEST lists) for the LFOs, envelope
   followers and arps.
@@ -190,6 +202,9 @@ GROOVE replaces swing: each step of a cycle gets a **weight**, and the cycle kee
 - The top row shows the cycle as it plays, each step a box as wide as its time; the playing step's box is filled.
 - A cycle starts again at the pattern's start. GROOVE times every track and the arpeggiators, and it is saved with the
   pattern.
+- **On external MIDI clock** GROOVE works too: the Digitone stays locked to every clock it receives, and the steps move
+  between them. Steps that come early (weights under 24) play ahead of their clock, from the tempo it measures; for the first
+  beat after PLAY, before it has measured the tempo, they can sit slightly off.
 
 <img src="docs/img/tempo.png" width="400" alt="TEMPO screen">
 
@@ -291,7 +306,7 @@ about 190 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.8 is played on a Digitone II and passed every check. Installing with Transfer, from Elektron's OS and
+Overtone 1.9 passed every check and installs and boots on a Digitone II; its GROOVE changes are not yet played on a unit (1.8 was). Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
