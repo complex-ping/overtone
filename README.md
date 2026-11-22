@@ -1,337 +1,235 @@
 # Overtone
 
-**Overtone** is custom firmware for the **Elektron Digitone II**, built on OS 1.12. It adds:
-- four new machines: **SOPHIE**, **MACHINEDRUM**, **LOOP** and **THRU**;
-- per-track insert effects;
-- envelope followers, a second arpeggiator that works as a step modulator, and an arpeggiator locked to the scale, on
-  audio and MIDI tracks;
-- parameter slides and knobs that show what is playing;
-- GROOVE, a step-by-step timing editor that replaces swing, with presets, random grooves and a modulatable drift;
-- instant pattern switching that keeps the place in the bar.
+Custom firmware for the **Elektron Digitone II** (OS 1.12) that adds new machines, per-track effects and a lot more
+modulation, while keeping your projects in Elektron's format.
 
-You make the build yourself: the patcher here turns Elektron's own OS 1.12 file into Overtone on your computer, and you
-send the result to the Digitone with Elektron Transfer. No Elektron firmware file is shared here.
+- **Four new machines:** SOPHIE, MACHINEDRUM, LOOP and THRU
+- **An insert effect on every track:** flanger, phaser, chorus or reverb
+- **Envelope followers**, a **second arpeggiator** that works as a step modulator, and an arp that plays in your scale
+- **GROOVE**, a step-by-step timing editor that replaces swing
+- **Instant pattern switching** that keeps your place in the bar
+- **Parameter slides**, and knobs that show what is actually playing
+- Arps, LFOs and followers on **MIDI tracks** too
 
-**Not made or supported by Elektron.**
+You build Overtone yourself from Elektron's own OS file, in your browser. No Elektron firmware is shared here.
+
+**Overtone is not made or supported by Elektron.**
 
 <a href="https://buymeacoffee.com/complexping"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy me a coffee" height="40"></a>
 
-- [What's in it](#whats-in-it)
-- [Install](#install)
-- [Going back, and recovery](#going-back-and-recovery)
-- [Compatibility](#compatibility)
-- [Known limitations](#known-limitations)
-- [How it's made and tested](#how-its-made-and-tested)
-- [Credits](#credits) and [licence](#licence)
+**Contents:** [Install](#install) · [The machines](#the-machines) · [Effects](#insert-effects) ·
+[Modulation](#modulation) · [Timing and patterns](#timing-and-patterns) · [Going back](#going-back-and-recovery) ·
+[Good to know](#good-to-know) · [Credits](#credits)
 
-The screens below are taken from Overtone running in an emulator.
-
-## What's in it
-
-Pick the new machines like any other: **[FUNC] + [SYN]** on a track.
-
-### SOPHIE
-
-<img src="docs/img/sophie-1.png" width="400" alt="SOPHIE page 1"> <img src="docs/img/sophie-2.png" width="400" alt="SOPHIE page 2">
-
-Percussive metal, pipes and kicks: a port of Matt Estela's **Schwung Sophie** synth.
-- **Page 1:** **TUNE DCAY MDCY COLR** / **METL FBK SWEP CRSH**.
-- **Page 2:** **RTIM RFBK RMIX RTON** / **MODL** (FUSE, STAK, SPLT, SHRD, PIPE, BOOM, KICK), **FBMD** (RAW / SMTH),
-  **DRIV**.
-- It has no filter of its own: use the track's filter.
-
-### MACHINEDRUM
-
-<img src="docs/img/md-2.png" width="400" alt="MACHINEDRUM page 2"> <img src="docs/img/md-1.png" width="400" alt="MACHINEDRUM page 1">
-
-Three of the **Machinedrum's** synthesis families in one machine, ported from its own sound engines.
-- **Page 2:** **FAM** picks the family, **MODL** the model.
-  - **TRX:** BD B2 SD RS XT XC CP MA CB CL CH OH CY.
-  - **EFM:** BD SD XT CP RS CB HH CY.
-  - **P-I** (physical models): BD SD MT ML MA RS RC CC HH.
-- **Page 1:** the model's 8 knobs, labelled as on the Machinedrum.
-- Notes above or below C4 transpose it.
-
-### LOOP
-
-<img src="docs/img/loop-1.png" width="400" alt="LOOP page 1"> <img src="docs/img/loop-2.png" width="400" alt="LOOP page 2">
-<img src="docs/img/custom-1.png" width="400" alt="CUSTOM SOURCE: tracks"> <img src="docs/img/custom-2.png" width="400" alt="CUSTOM SOURCE: inputs, send effects, USB">
-
-A looper on a synth track, after the Machinedrum's RAM machines. It records all the time (8 seconds per track, stereo).
-A trig plays what it has, at the trig's pitch. Selecting LOOP on an empty track puts a 16-step trig on step 1.
-- **Page 1:**
-  - **SRC:** what it records: a track (**T1**–**T16**), **MAIN** (the mix, the audio inputs and USB in), **IN** (the
-    audio inputs, after the external mixer), **USB** (USB in, at its USB TO MAIN level), **CUST** (your own choice, see
-    below), or **OFF** (keeps the buffer: it stays in time with the pattern, so a source turned back on lands on the beat).
-    SRC can be p-locked; the knob shows the source while you lock it.
-  - **Push A** opens **CUSTOM SOURCE**, the same dialog as AUDIO ROUTING: pick any tracks with the trigs, and on page 2
-    ([DOWN]) the inputs, the send effects (**DL RV CH**) and **USB**. Everything is off at first. [YES] or [NO] closes
-    it and SRC reads **CUST**. The choice is saved with the sound.
-  - **LEN:** the take's length. Hold **[FUNC]** while turning to step through 4, 8, 16, 32, 48 … 128 steps. **GAIN**,
-    and **FDBK** (overdub).
-  - **MIX:** crossfades the source into the loop (tracks, inputs and USB fade; send effects are recorded but stay
-    audible). **INS:** **MIX** replaces the source, **LAYR** plays the loop on top of it.
-  - **SLCE:** cuts the take into slices, played by note (C4 = the first slice). **SNAP:** start and end move in steps.
-- **Page 2 ([SYN] again): the buffer.** The waveform, where it records and where it plays. **STRT END PTCH DIR** /
-  **XFAD LOOP MODE SPED**.
-  - **MODE TAPE:** speed follows pitch. **STRC:** time-stretch, so pitch (**PTCH**, ±36 semitones) and speed (**SPED**)
-    are separate.
-  - Push **A** or **B** to link start and end: the chain icon joins and END becomes the window size.
-  - **END** below **STRT** plays the window the other way round (FWD plays backwards, REV forwards).
-  - Hold **[FUNC]** while turning **SPED** to step through ratios (×1, ×1.5, ×2 …), or **PTCH** to step through fifths
-    and octaves.
-
-### THRU
-
-<img src="docs/img/thru.png" width="400" alt="THRU machine">
-
-A machine whose sound is **another track's output**, sent through this track's own overdrive, filter, amp, pan and
-insert.
-- **SRC:** the source track (by default the one on the left), or **CUST**: push **A** for the CUSTOM SOURCE dialog,
-  as on LOOP.
-- **GAIN:** the level (64 = unchanged).
-- **MIX:** crossfades from the source to THRU. At 127 only THRU is heard, including the source's delay and reverb sends.
-- **MONO:** **STER** (stereo) or **MONO**.
-
-### Insert effects on every track
-
-<img src="docs/img/fx-insert-select.png" width="400" alt="FX page with M.SEL and MOD"> <img src="docs/img/fx-insert-knobs.png" width="400" alt="Insert knobs">
-
-Every track gets its own insert effect, on top of the shared delay, reverb and chorus. Each insert has its own settings
-and p-locks, and LFOs and envelope followers can modulate it.
-- **[FX], first page:**
-  - **D M.SEL** picks the insert: **FLNG** (flanger), **PHSR** (phaser), **CHOR** (chorus) or **REVB** (reverb).
-  - **H MOD** is the insert's dry/wet.
-  - Both can be p-locked, so one trig can switch to another effect.
-- **[FX], second page: the insert's knobs.**
-  - FLNG, PHSR and CHOR: **DEL** (or CNTR), **DPTH**, **SPD**, **FDBK** / **WDTH** (stereo width), **SPH** (or LP),
-    **FL.RT**, **SHPE**.
-  - REVB: **DEC DAMP GATE PDLY** / **LP HP MODD WDTH**.
-  - **FL.RT** routes the insert **PRE FLTR** (before the filter, in stereo: the track takes two voices per note) or
-    **POST FLTR** (after the pan).
-- **[FX], third page:** **SR.RT** and **OD.RT** put the stock bit reduction and overdrive before or after the filter.
-
-<img src="docs/img/fx-route.png" width="400" alt="FX routing page">
-
-FLNG is an original design. PHSR, CHOR and REVB are ports of the Monomachine's effects.
-
-### Envelope followers
-
-<img src="docs/img/env1.png" width="400" alt="Envelope follower page"> <img src="docs/img/lfo1.png" width="400" alt="LFO page">
-
-Two followers per sound. On a **[MOD]** page press **RIGHT** for ENV1 (UP / DOWN for ENV2), and **LEFT** to go back
-to the LFOs.
-- **SRC:** the track it listens to (by default its own), **MAIN** (all tracks), **IN** (the audio inputs), **USB** (the
-  USB audio input) or **CUST**: push the SRC knob to choose any mix of tracks, IN, the delay, reverb and chorus returns and
-  USB in the CUSTOM SOURCE window (as on LOOP); the follower listens to all of them together.
-- **ATK** and **DEC:** how fast it follows.
-- **DEST:** what it moves (any parameter, as with LFO DEST).
-- **IN** and **OUT:** meters of the input and output levels; turning them sets the gain.
-- **THR:** the threshold below which it does nothing.
-- **DEP:** the depth, positive or negative.
-- Every knob can be p-locked.
-
-### Two arpeggiators
-
-<img src="docs/img/arp1.png" width="400" alt="ARP 1 menu"> <img src="docs/img/arp2.png" width="400" alt="ARP 2 menu">
-
-- **ARP 1** is the stock arpeggiator with more controls. The second row:
-  - **E OFS:** the selected step's offset (LEFT / RIGHT picks the step).
-  - **F DEST:** on **PITCH** the arp plays **in the keyboard scale** (KEYBOARD SETUP: ROOT and SCALE). Anywhere else,
-    each step moves that parameter by its offset while the note stays.
-  - **G DEP:** on PITCH it stretches or flips the pattern (×−4 to ×4); elsewhere it is the depth.
-  - **H LEN.**
-  - **UP / DOWN** mutes or unmutes the selected step.
-- **ARP 2** is a step modulator: it plays no notes. It restarts at every trig and moves its DEST by each step's
-  offset × DEP. On PITCH it adds scale degrees to ARP 1's notes. With the sequencer stopped it runs while you hold a
-  key of the track, from its first step. Its MODE walks its steps (OFF UP DOWN CYCL SHUF RAND FREE; no TRUE: it has
-  no notes to order). **RANGE** multiplies the step values (×1 to ×8). **SLIDE** (N.LEN's knob on ARP 2, 0..127) glides
-  each step from the value before: 0 jumps, 127 slides over the whole step, a smooth line through the steps.
-- **MODE SHUF and RAND** (after CYCL), on both arps. On ARP 1 the range is every held note in every octave of RANGE.
-  **SHUF** plays all of it in one random order and repeats that order; a new trig, chord or RANGE draws a new order.
-  **RAND** picks a random note and octave on every step. On ARP 2 they shuffle or pick its steps.
-- **MODE FREE** (the last one), on both arps: the arp runs like a sequencer from the pattern's start and restarts at every
-  pattern loop; trigs don't restart it. ARP 1 FREE plays without any trig, from the track's default note; a trig doesn't
-  sound but moves the arp to its note, and its p-locks apply to the arp. Switched on during playback it starts at once, in
-  time with the pattern.
-- **SPEED** goes up to **1/128**, **1/128Q** and **1/128T**.
-- A dotted line under the step grid shows the step playing; on the selected step the cursor turns dotted.
-- **Keys in the ARP menu:** tap **[ARP]** to switch between ARP 1 and ARP 2. Hold **[ARP]** and press **[YES]** to
-  randomize the shown arp (its MODE never OFF; ARP 1 keeps FREE only if it was on FREE). **[FUNC] + [ARP]** or a page key closes the menu.
-- **Per trig:** in GRID RECORDING, hold a trig and turn the ARP knobs. That trig's arp uses the locked values, so, for
-  example, one trig can arpeggiate while the rest don't. Mutes set on a held trig apply to that trig only.
-- **Live recording** records ARP knob moves as locks.
-
-### Cross-modulation
-
-Each sound has its LFOs (**[MOD]**, UP / DOWN), two envelope followers and two arps. Every continuous knob of each of
-them is a destination for the others: for example, LFO1 can wobble ARP 1's speed, ARP 2 can step ENV1's depth, and
-LFO1 can modulate LFO2's knobs. No modulator targets itself. In the DEST lists, each LFO, follower and arp has its
-own group after SYN and FX.
-
-### Arps, LFOs and followers on MIDI tracks
-
-A MIDI track has both arps, its LFOs and both envelope followers, to play and modulate external gear:
-- **ARP 1** on PITCH sends its notes over MIDI, in the keyboard scale, with each step's length as the note length.
-- Every DEST list holds the MIDI track's values (**PB**, **AT**, **MW**, **BC**, **VAL1**–**VAL16**) and the knobs of the
-  LFOs, arps and followers. Modulation on a MIDI value is sent as CC (a value that is OFF sends nothing, as on Elektron's OS).
-- The LFOs can modulate the arp and follower knobs, as on audio tracks.
-- The followers listen to another track, MAIN or IN (the default on a MIDI track) and are saved with the sound.
-
-### GROOVE
-
-<img src="docs/img/groove-swing.png" width="400" alt="GROOVE: the SW62 preset, playing"> <img src="docs/img/groove.png" width="400" alt="GROOVE: a random groove with DRIFT">
-
-**[TEMPO]** opens the tempo screen; **[TEMPO] again** switches to GROOVE, and once more back to the tempo screen.
-GROOVE replaces swing: each step of a cycle gets a **weight**, and the cycle keeps its length, so the bar stays in time.
-- **LEVEL** or **LEFT / RIGHT** move the pointer one step. **E** sets that step's weight (1–99, 24 = straight); its label
-  shows how long the step lasts compared with straight (×1.50). **UP / DOWN** change the weight by one; held, they repeat.
-- **F** picks a preset. Editing a weight or the length shows USER.
-
-  | Preset | Weights | What it is |
-  |---|---|---|
-  | STRT | 24 × 16 | straight, no swing |
-  | SW54 / SW58 / SW62 / SW66 / SW71 | 27 23 / 29 21 / 31 19 / 33 17 / 71 29 | 16th swing, exactly Elektron's SWING 54 / 58 / 62 / 66 / 71 % |
-  | 8S58 / 8S66 | 29 29 21 21 / 33 33 17 17 | the same swing on 8ths |
-  | PUSH | 20 28 | off-beat 16ths early |
-  | SHFL | 32 16 24 | a 3-step shuffle that runs across the beat |
-  | LAZY | 24 27 24 21 | the 3rd and 4th 16th of each beat laid back |
-  | QUIN | 30 20 | 60 % swing (3:2) |
-
-  Any Elektron swing value: LEN 2, step 1 = half the %, step 2 = 50 minus that (60 % = 30 20; an odd % such as 57 = 57 43).
-  Elektron's swing only moves trigs marked as swing trigs; GROOVE moves every step, the arpeggiators and micro timing too.
-- **G** sets **DRIFT** (0–99): every cycle each weight moves by a new random amount, while the cycle's start stays in
-  time. DRIFT is also a modulation destination ("Groove Drift", at the end of the DEST lists) for the LFOs, envelope
-  followers and arps.
-- **H** sets the cycle's length (1–16 steps).
-- **Hold [TEMPO] and press [YES]** for random weights (the length stays). Release [TEMPO] and hold it again for another.
-- The top row shows the cycle as it plays, each step a box as wide as its time; the playing step's box is filled.
-- A cycle starts again at the pattern's start. GROOVE times every track and the arpeggiators, and it is saved with the
-  pattern.
-- **On external MIDI clock** GROOVE works too: the Digitone stays locked to every clock it receives, and the steps move
-  between them. Steps that come early (weights under 24) play ahead of their clock, from the tempo it measures; for the first
-  beat after PLAY, before it has measured the tempo, they can sit slightly off.
-
-<img src="docs/img/tempo.png" width="400" alt="TEMPO screen">
-
-The tempo screen has no SWING. **[FUNC] + [TEMPO]** is tap tempo, as on Elektron's OS.
-
-### Instant pattern switch
-
-Hold **[PTN]** and press **[YES]** to turn it on, **[NO]** to turn it off; a message shows which for about a second, and
-you can press them again while [PTN] is still held. While it is on, a pattern picked with **[PTN] + [TRIG]** takes over
-at the next step instead of at the end of the playing pattern, at the place it would have reached had it played since
-PLAY: a 16-step pattern picked on step 21 starts at its step 6, so the bar stays in place. Chains, songs and program
-changes still change at the pattern's end. The setting is saved with the project.
-
-### Parameter slides
-
-On **TRIG page 2**, **SLD** turns on a slide for the trig and **SLEN** sets its length, in steps. Every parameter the trig
-changes (its p-locks, or the sound's values) glides from where the track was to the new value, insert effects included.
-A lock trig slides too, so locks can glide without playing a new note. Turning a knob by hand acts at once.
-
-### Knobs that show what is playing
-
-While the sequencer runs, the knobs on the sound pages show the value that is actually playing: p-locks, slides and
-LFO / follower / arp movement, not only the value you set. The filter's FREQ follows the filter envelope too. Holding a
-page key shows the set values as numbers. Holding a trig shows that trig's locks so you can edit them.
-
-### DSP load
-
-<img src="docs/img/dsp-load.png" width="400" alt="SETTINGS > SYSTEM > DSP LOAD">
-
-**[SETTINGS] > SYSTEM > DSP LOAD** shows how busy the sound engine is. LOOP, SOPHIE and MACHINEDRUM voices cost more than
-the stock machines. When it reaches 100 % the audio crackles: use fewer voices.
+*Screenshots are from Overtone running in an emulator.*
 
 ## Install
 
-You need a Digitone II, a computer, a USB cable and **Elektron Transfer**.
+You need a Digitone II, a USB cable and **Elektron Transfer**.
 
-1. **Get Elektron's OS 1.12.** On [Elektron's download page](https://elektron.se/support-downloads/digitone-ii),
-   download **Digitone II OS 1.12** (`Digitone_II_OS1.12_dist.zip`). **Keep this file:** Elektron's page lists only
-   the current OS, and you need it to go back or to make another build.
-2. **Make the build** in the **[Overtone builder](https://complex-ping.github.io/overtone/)**: drop the .zip on the
-   page and press **Make**. It runs in the browser, with nothing to install and nothing uploaded. It checks that the
-   file is Elektron's original OS 1.12, and lets you save the Overtone `.syx` only if it is byte for byte the tested
-   build.
-3. **Send it to the Digitone.** Connect it over USB, open Transfer, drag the Overtone `.syx` onto it, answer **YES** on
-   the Digitone and wait for it to restart.
+1. **Download Elektron's OS 1.12** (`Digitone_II_OS1.12_dist.zip`) from
+   [Elektron's download page](https://elektron.se/support-downloads/digitone-ii). Keep it somewhere safe: Elektron only
+   lists the latest OS, and you need this file to go back or to build again.
+2. **Build Overtone** in the [Overtone builder](https://complex-ping.github.io/overtone/): drop the .zip on the page and
+   press **Make**. Everything runs in your browser and nothing is uploaded. It only accepts the original OS 1.12 and
+   only saves a file that matches the tested build exactly.
+3. **Send it** to the Digitone with Transfer: drag the `.syx` onto it, press **YES** on the Digitone and wait for it to
+   restart.
 
 <details>
-<summary>Without the browser: the patcher in Python</summary>
+<summary>Prefer the command line?</summary>
 
-With **Python 3.11 or later** ([python.org/downloads](https://www.python.org/downloads/)), download Overtone from
-[Releases](../../releases), unzip it, and in a terminal in the unzipped folder run:
+With Python 3.11 or later, download Overtone from [Releases](../../releases), unzip it and run:
 
 ```bash
 python3 patcher/patch.py ~/Downloads/Digitone_II_OS1.12_dist.zip
 ```
 
-It makes the same file in a few seconds and saves it next to the .zip. The .zip, its unzipped folder and the .syx all
-work as input.
+It writes the same file next to the .zip. The unzipped folder or the .syx work as input too.
 </details>
 
-## Going back, and recovery
+## The machines
 
-- **Back to Elektron's OS:** send Elektron's `Digitone_II_OS1.12.syx` (inside the .zip) with Transfer, the same way.
-  Overtone installs it by itself, without asking for YES.
-- **Updating Overtone:** send the new build with Transfer the same way.
-- **On Overtone 1.0:** an OS sent with Transfer stops on **Receiving** or **PREPARING...** and nothing is written:
-  switch the Digitone off and on. To update from 1.0, go back to Elektron's OS with the STARTUP menu below, then
-  send the new build with Transfer.
-- **If the Digitone doesn't start:**
-  1. Hold **[FUNC]** while you switch it on. The STARTUP menu appears.
-  2. Press **[TRIG 4]** (OS UPGRADE).
-  3. In Transfer, use **LEGACY OS UPGRADE** mode and send Elektron's `Digitone_II_OS1.12.syx` over a **DIN MIDI** cable.
-     USB doesn't work in the STARTUP menu. It takes about 15 minutes.
+Choose them like any other machine: **[FUNC] + [SYN]** on a track.
 
-  Overtone never changes the bootstrap that holds this menu.
+### SOPHIE
 
-## Compatibility
+<img src="docs/img/sophie-1.png" width="400" alt="SOPHIE page 1"> <img src="docs/img/sophie-2.png" width="400" alt="SOPHIE page 2">
 
-- **Digitone II, OS 1.12 only.** The patcher refuses any other file.
-- **Projects** stay in Elektron's format. Overtone's settings live in spare space in the sound, the pattern's lock table
-  and values the stock OS doesn't use.
-- **Swing** is gone. A project's saved swing is ignored, and GROOVE takes its place.
-- **Opening Overtone projects on Elektron's OS** is not tested. Keep a copy.
-- **An OS sent over USB installs without a confirmation** on the unit (Transfer included).
+Metallic percussion, pipes and punchy kicks, ported from Matt Estela's **Schwung Sophie**. Seven models (FUSE, STAK,
+SPLT, SHRD, PIPE, BOOM, KICK) on page 2, with feedback and drive. It has no filter of its own, so shape it
+with the track's filter.
 
-## Known limitations
+### MACHINEDRUM
 
-- **The Overbridge plugin** knows only Elektron's names and ranges.
-- **GROOVE** is global for now (per track is planned). Tempo-synced LFOs and delays follow the BPM, not the groove, and
-  an external MIDI clock is not warped by it.
-- **PRE FLTR inserts** use two voices per note on that track.
-- **Heavy machines** (LOOP in STRC mode, P-I, many SOPHIE voices) can push the DSP over 100 %. Watch DSP LOAD.
+<img src="docs/img/md-2.png" width="400" alt="MACHINEDRUM page 2"> <img src="docs/img/md-1.png" width="400" alt="MACHINEDRUM page 1">
 
-## How it's made and tested
+Three of the **Machinedrum's** synthesis families, ported from its own sound engines:
+- **TRX:** BD B2 SD RS XT XC CP MA CB CL CH OH CY
+- **EFM:** BD SD XT CP RS CB HH CY
+- **P-I** (physical models): BD SD MT ML MA RS RC CC HH
+
+Pick the family (**FAM**) and model (**MODL**) on page 2; page 1 has the model's eight knobs, named as on the
+Machinedrum. Play notes above or below C4 to transpose.
+
+### LOOP
+
+<img src="docs/img/loop-1.png" width="400" alt="LOOP page 1"> <img src="docs/img/loop-2.png" width="400" alt="LOOP page 2">
+
+A looper inspired by the Machinedrum's RAM machines. It is always recording (8 seconds of stereo per track), and a trig
+plays back what it caught, at the trig's pitch.
+
+- **SRC** picks what it records: a track, **MAIN** (the whole mix), **IN** (the audio inputs), **USB**, or **CUST**
+  (push knob A to pick any mix of tracks, inputs, send effects and USB). **OFF** freezes the buffer but keeps it in
+  time, so turning the source back on lands on the beat. SRC can be p-locked.
+- **LEN** sets the length (hold [FUNC] for 4, 8, 16, 32 … 128 steps). **FDBK** overdubs, **MIX** fades from the source
+  to the loop, **SLCE** cuts the take into slices played by note.
+- **Page 2** shows the waveform. Set start, end, pitch and direction; push A or B to link start and end into a moving
+  window. **TAPE** mode ties speed to pitch, **STRC** time-stretches so they're independent. Hold [FUNC] while turning
+  SPED or PTCH to jump between musical ratios and intervals.
+
+<img src="docs/img/custom-1.png" width="400" alt="CUSTOM SOURCE: tracks"> <img src="docs/img/custom-2.png" width="400" alt="CUSTOM SOURCE: inputs, send effects, USB">
+
+### THRU
+
+<img src="docs/img/thru.png" width="400" alt="THRU machine">
+
+Plays **another track's output** through this track's overdrive, filter, amp, pan and insert. **SRC** picks the track
+(or CUST, as on LOOP), **GAIN** the level, **MIX** fades from the original to the processed sound, and **MONO** chooses
+stereo or mono.
+
+## Insert effects
+
+<img src="docs/img/fx-insert-select.png" width="400" alt="FX page with M.SEL and MOD"> <img src="docs/img/fx-insert-knobs.png" width="400" alt="Insert knobs">
+
+Every track gets its own effect, on top of the shared delay, reverb and chorus.
+
+- **[FX] page 1:** **M.SEL** picks **FLNG**, **PHSR**, **CHOR** or **REVB**, and **MOD** sets the dry/wet. Both can be
+  p-locked, so a single trig can switch effects.
+- **[FX] page 2:** the effect's knobs. **FL.RT** places it before the filter (in stereo; the track then uses two voices
+  per note) or after the pan.
+- **[FX] page 3:** move the stock bit reduction and overdrive before or after the filter.
+
+The flanger is an original design; the phaser, chorus and reverb are ports of the Monomachine's.
+
+## Modulation
+
+### Envelope followers
+
+<img src="docs/img/env1.png" width="400" alt="Envelope follower page"> <img src="docs/img/lfo1.png" width="400" alt="LFO page">
+
+Two per sound. On a **[MOD]** page press **RIGHT** to reach them (UP / DOWN switches follower, LEFT goes back to the
+LFOs). A follower listens to a track, the main mix, the inputs, USB or a custom mix, and moves any parameter you pick in
+**DEST**. Set how fast it reacts (**ATK**, **DEC**), the threshold (**THR**) and the depth (**DEP**, positive or
+negative). Every knob can be p-locked.
+
+### Two arpeggiators
+
+<img src="docs/img/arp1.png" width="400" alt="ARP 1 menu"> <img src="docs/img/arp2.png" width="400" alt="ARP 2 menu">
+
+Tap **[ARP]** in the arp menu to switch between them.
+
+- **ARP 1** is the stock arpeggiator with more to it. Each step has an offset (**OFS**) and can be muted (UP / DOWN).
+  With **DEST** on PITCH it plays in the keyboard scale and **DEP** stretches or flips the pattern; on any other DEST
+  the note stays and the steps move that parameter instead.
+- **ARP 2** plays no notes: it is a step modulator. It restarts on every trig and moves its DEST by each step's value.
+  **RANGE** scales the steps (×1 to ×8), and **SLIDE** glides smoothly from one step to the next. On PITCH it adds
+  scale steps to ARP 1's notes.
+- **New modes:** **SHUF** plays the notes in a random order and repeats it, **RAND** picks a random note each step, and
+  **FREE** runs the arp like a sequencer from the pattern start, without needing trigs.
+- **SPEED** goes up to 1/128.
+- **Hold [ARP] + [YES]** to randomize. In grid recording, hold a trig and turn the ARP knobs to lock them to that trig.
+
+### Cross-modulation
+
+The LFOs, envelope followers and arps can all modulate each other's knobs: LFO1 can wobble ARP 1's speed, ARP 2 can step
+a follower's depth, and so on. You'll find them in the DEST lists after SYN and FX.
+
+### MIDI tracks
+
+MIDI tracks get both arps, the LFOs and both followers too. ARP 1 sends its notes over MIDI in the keyboard scale, and
+any modulation can target pitch bend, aftertouch, mod wheel, breath or the track's CC values.
+
+## Timing and patterns
+
+### GROOVE
+
+<img src="docs/img/groove-swing.png" width="400" alt="GROOVE: the SW62 preset, playing"> <img src="docs/img/groove.png" width="400" alt="GROOVE: a random groove with DRIFT">
+
+Press **[TEMPO] twice** to open GROOVE. It replaces swing: every step in a cycle gets a weight that makes it longer or
+shorter, while the cycle as a whole stays in time.
+
+- **LEFT / RIGHT** choose a step, **E** or **UP / DOWN** set its weight (24 is straight).
+- **F** picks a preset: straight, Elektron-style swing from 54 to 71 % on 16ths or 8ths, plus PUSH, SHFL, LAZY and QUIN.
+- **G** adds **DRIFT**, a fresh random nudge every cycle. It is also a modulation destination.
+- **H** sets the cycle length (1–16 steps).
+- **Hold [TEMPO] + [YES]** for a random groove.
+
+GROOVE moves every step on every track, including the arps and micro timing. It is saved with the pattern and also
+works when the Digitone follows an external MIDI clock.
+
+**Swing settings:** to match any Elektron swing value, set LEN 2, step 1 to half the percentage and step 2 to 50 minus
+that (60 % = 30 and 20).
+
+### Instant pattern switch
+
+Hold **[PTN]** and press **[YES]** to turn it on (**[NO]** turns it off). A new pattern then starts at the next step
+instead of at the end of the bar, and at the position it would have reached if it had been playing all along, so you
+never lose the beat. Chains, songs and program changes still switch at the end of the pattern. The setting is saved
+with the project.
+
+### Parameter slides
+
+On **TRIG page 2**, turn on **SLD** and set **SLEN** (in steps). The trig's values then glide in from where the track
+was, insert effects included. Lock trigs slide too, so you can glide parameters without a new note.
+
+### Knobs that show what is playing
+
+While the sequencer runs, the knobs show the live value, including p-locks, slides and modulation. Hold a page key to see
+the values you set.
+
+## Going back and recovery
+
+- **Back to Elektron's OS:** send `Digitone_II_OS1.12.syx` (inside Elektron's .zip) with Transfer. Overtone installs it
+  without asking for YES.
+- **Updating:** send the new Overtone build the same way.
+- **On Overtone 1.0?** Transfer can't update it. Go back to Elektron's OS through the STARTUP menu below first.
+- **If the Digitone won't start:** hold **[FUNC]** while switching it on, press **[TRIG 4]** (OS UPGRADE), and send
+  Elektron's `.syx` in Transfer's **LEGACY OS UPGRADE** mode over a **DIN MIDI** cable (USB doesn't work here). It takes
+  about 15 minutes. Overtone never touches this startup menu.
+
+## Good to know
+
+- **OS 1.12 only.** The builder refuses any other file.
+- **Projects** stay in Elektron's format. Opening Overtone projects on Elektron's OS isn't tested, so keep a copy.
+- **Swing is gone.** Saved swing is ignored; use GROOVE instead.
+- **DSP load:** LOOP, SOPHIE and MACHINEDRUM cost more than the stock machines. If the audio crackles, check
+  **[SETTINGS] > SYSTEM > DSP LOAD** and use fewer voices.
+- **GROOVE** is global for now (per track is planned). Tempo-synced LFOs and delays follow the BPM, not the groove.
+- **Overbridge** only knows Elektron's parameter names and ranges.
+
+## How it's made
 
 Overtone was developed with [Claude Code](https://claude.com/claude-code) and the
-[digitone-2-modding-skill](https://github.com/complex-ping/digitone-2-modding-skill). Every build runs a suite of
-about 190 checks in two emulators before it reaches a unit:
-- the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
-- the DSP program in a SHARC emulator.
+[digitone-2-modding-skill](https://github.com/complex-ping/digitone-2-modding-skill). Every build passes about 190
+checks in two emulators (the Digitone's main OS in [digikit](https://github.com/m-dwyer/digikit) and its DSP in a SHARC
+emulator) before it is tried on a real unit.
 
-Overtone 1.10 passed every check and installs and boots on a Digitone II; its arp changes are emulator-checked, and SHUF / RAND were played on a unit. Installing with Transfer, from Elektron's OS and
-from Overtone, was checked on the unit.
-
-The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
-plus Overtone's own bytes. Every 16-byte run inside those bytes is checked against Elektron's OS 1.12 file, and none of them is in
-it. It also holds the packer's choices for the build (which bytes repeat earlier ones, and from where; no
-bytes of the OS), so it packs the tested file byte for byte in seconds. It seals the build with the key it derives from your file, as the Digitone expects.
+The patcher holds only Overtone's own code plus instructions for copying from your file; none of Elektron's bytes are in
+it.
 
 ## Credits
 
-- **[dnfw](https://github.com/angellinares/dn2_firmware_explore)** (angellinares): the firmware container, the code
-  loader and the C build path. `patcher/_dnfw` is its code, unchanged.
+- **[dnfw](https://github.com/angellinares/dn2_firmware_explore)** (angellinares): the firmware container, code loader
+  and C build path. `patcher/_dnfw` is its code, unchanged.
 - **[elektron-firmware-tool](https://github.com/mischa85/elektron-firmware-tool)** (Marcel Bierling): the container
-  format that dnfw follows.
+  format dnfw follows.
 - **[digikit](https://github.com/m-dwyer/digikit)** (Em D): the ColdFire emulator every build is tested in.
 - **[Schwung Sophie](https://github.com/mestela/schwung-sophie)** (Matt Estela, digisophie contributors; MIT): the
   SOPHIE machine.
 - **[gearmulator](https://github.com/dsp56300/gearmulator)**: its DSP56300 emulator ran the Machinedrum and Monomachine
-  references the ports were compared against.
-- **Elektron's Machinedrum and Monomachine**: the MACHINEDRUM machine and the PHSR, CHOR and REVB inserts are ports of
+  references.
+- **Elektron's Machinedrum and Monomachine**: the MACHINEDRUM machine and the PHSR, CHOR and REVB effects are ports of
   their sound engines.
 - [naturarum/dn2-cfw](https://github.com/naturarum/dn2-cfw) (Digiwerk) showed how to ship Digitone II firmware as a
   patcher.
