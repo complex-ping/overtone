@@ -143,15 +143,21 @@ to the LFOs.
   - **H LEN.**
   - **UP / DOWN** mutes or unmutes the selected step.
 - **ARP 2** is a step modulator: it plays no notes. It restarts at every trig and moves its DEST by each step's
-  offset × DEP. On PITCH it adds scale degrees to ARP 1's notes.
-- **MODE FREE** (after CYCL), on both arps: the arp runs like a sequencer from the pattern's start and restarts at every
+  offset × DEP. On PITCH it adds scale degrees to ARP 1's notes. With the sequencer stopped it runs while you hold a
+  key of the track, from its first step. Its MODE walks its steps (OFF UP DOWN CYCL SHUF RAND FREE; no TRUE: it has
+  no notes to order). **RANGE** multiplies the step values (×1 to ×8). **SLIDE** (N.LEN's knob on ARP 2, 0..127) glides
+  each step from the value before: 0 jumps, 127 slides over the whole step, a smooth line through the steps.
+- **MODE SHUF and RAND** (after CYCL), on both arps. On ARP 1 the range is every held note in every octave of RANGE.
+  **SHUF** plays all of it in one random order and repeats that order; a new trig, chord or RANGE draws a new order.
+  **RAND** picks a random note and octave on every step. On ARP 2 they shuffle or pick its steps.
+- **MODE FREE** (the last one), on both arps: the arp runs like a sequencer from the pattern's start and restarts at every
   pattern loop; trigs don't restart it. ARP 1 FREE plays without any trig, from the track's default note; a trig doesn't
   sound but moves the arp to its note, and its p-locks apply to the arp. Switched on during playback it starts at once, in
   time with the pattern.
 - **SPEED** goes up to **1/128**, **1/128Q** and **1/128T**.
 - A dotted line under the step grid shows the step playing; on the selected step the cursor turns dotted.
 - **Keys in the ARP menu:** tap **[ARP]** to switch between ARP 1 and ARP 2. Hold **[ARP]** and press **[YES]** to
-  randomize the shown arp. **[FUNC] + [ARP]** or a page key closes the menu.
+  randomize the shown arp (its MODE never OFF; ARP 1 keeps FREE only if it was on FREE). **[FUNC] + [ARP]** or a page key closes the menu.
 - **Per trig:** in GRID RECORDING, hold a trig and turn the ARP knobs. That trig's arp uses the locked values, so, for
   example, one trig can arpeggiate while the rest don't. Mutes set on a held trig apply to that trig only.
 - **Live recording** records ARP knob moves as locks.
@@ -306,7 +312,7 @@ about 190 checks in two emulators before it reaches a unit:
 - the Digitone's real main OS in [digikit](https://github.com/m-dwyer/digikit);
 - the DSP program in a SHARC emulator.
 
-Overtone 1.9 passed every check and installs and boots on a Digitone II; its GROOVE changes are not yet played on a unit (1.8 was). Installing with Transfer, from Elektron's OS and
+Overtone 1.10 passed every check and installs and boots on a Digitone II; its arp changes are emulator-checked, and SHUF / RAND were played on a unit. Installing with Transfer, from Elektron's OS and
 from Overtone, was checked on the unit.
 
 The patcher (`patcher/patch.py`) needs only Python. It holds Overtone's changes as copy instructions over your own file,
