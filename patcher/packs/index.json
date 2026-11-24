@@ -1,5 +1,12 @@
 [
  {
+  "id": "Overtone-1.12",
+  "title": "Overtone 1.12",
+  "stock_sha256": "7e5b8a733d4ab1fdf7e5d22757f7d8eddaa3cbf71d0858874a791844c02ceb35",
+  "out_sha256": "e378ee0592555af143a38a5e85f87fab188b45d1d41fee6d9e1a54403fc0732d",
+  "out_name": "Overtone-1.12.syx"
+ },
+ {
   "id": "Overtone-1.11",
   "title": "Overtone 1.11",
   "stock_sha256": "7e5b8a733d4ab1fdf7e5d22757f7d8eddaa3cbf71d0858874a791844c02ceb35",

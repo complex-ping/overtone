@@ -212,6 +212,9 @@ values, as on Elektron's OS. The setting is kept over power cycles and project l
   **[SETTINGS] > SYSTEM > DSP LOAD** and use fewer voices.
 - **GROOVE** is global for now (per track is planned). Tempo-synced LFOs and delays follow the BPM, not the groove.
 - **Overbridge** only knows Elektron's parameter names and ranges.
+- **Elektron's key combinations cover Overtone's parameters too:** [TRK] + [PLAY] clears them with the preset, [PARAMETER] + [NO]
+  reloads a page's saved values (TYPE brings its effect's saved knobs), and [FUNC] + COPY / PASTE / CLEAR in either ARP menu
+  carry DEST and DEP.
 
 ## How it's made
 
