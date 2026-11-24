@@ -72,6 +72,10 @@ Three of the **Machinedrum's** synthesis families, ported from its own sound eng
 Pick the family (**FAM**) and model (**MODL**) on page 2; page 1 has the model's eight knobs, named as on the
 Machinedrum. Play notes above or below C4 to transpose.
 
+MACHINEDRUM is polyphonic: a new note doesn't cut the one still ringing, and every voice runs its own engine. **Unison**
+works as on the other machines (VOICE menu: STATE, V.AMNT, SPREAD), each unison voice a full engine. Picking MACHINEDRUM
+in the machine menu switches the track's unison off; turn it back on in the VOICE menu.
+
 ### LOOP
 
 <img src="docs/img/loop-1.png" width="400" alt="LOOP page 1"> <img src="docs/img/loop-2.png" width="400" alt="LOOP page 2">
@@ -186,7 +190,8 @@ was, insert effects included. Lock trigs slide too, so you can glide parameters 
 ### Knobs that show what is playing
 
 While the sequencer runs, the knobs show the live value, including p-locks, slides and modulation. Hold a page key to see
-the values you set.
+the values you set. To turn this off, set **[SETTINGS] > SYSTEM > LIVE KNOBS** to OFF: the knobs then show the stored
+values, as on Elektron's OS. The setting is kept over power cycles and project loads.
 
 ## Going back and recovery
 
