@@ -210,6 +210,8 @@ values, as on Elektron's OS. The setting is kept over power cycles and project l
 - **Swing is gone.** Saved swing is ignored; use GROOVE instead.
 - **DSP load:** LOOP, SOPHIE and MACHINEDRUM cost more than the stock machines. If the audio crackles, check
   **[SETTINGS] > SYSTEM > DSP LOAD** and use fewer voices.
+- **MACHINEDRUM voices are managed for you:** at most 8 ring at once (fewer while the DSP is busy), new notes take over from
+  the oldest ones (a 2.7 ms fade), and a big unison sounds with up to 8 voices.
 - **GROOVE** is global for now (per track is planned). Tempo-synced LFOs and delays follow the BPM, not the groove.
 - **Overbridge** only knows Elektron's parameter names and ranges.
 - **Elektron's key combinations cover Overtone's parameters too:** [TRK] + [PLAY] clears them with the preset, [PARAMETER] + [NO]
