@@ -201,8 +201,8 @@ values, as on Elektron's OS. The setting is kept over power cycles and project l
 
 Press **[-]** to undo and **[+]** to redo (not in KEYBOARD mode, where they change the octave). Up to 50 steps of what
 **[FUNC] + [YES]** would save, the pattern and its kit, across all tracks: knob turns, randomizes, trigs, locks and sound
-loads. One knob turn is one step, and the screen names what was undone, for example "UNDO T2 FILTER DEC". Changing the
-pattern starts a new history.
+loads. A step is what you changed before a pause of about two seconds, or one knob until you move another. The screen
+shows UNDO / REDO. Changing the pattern starts a new history.
 
 ## Going back and recovery
 
