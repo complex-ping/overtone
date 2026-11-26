@@ -100,7 +100,8 @@ plays back what it caught, at the trig's pitch.
 
 Plays **another track's output** through this track's overdrive, filter, amp, pan and insert. **SRC** picks the track
 (or CUST, as on LOOP), **GAIN** the level, **MIX** fades from the original to the processed sound, and **MONO** chooses
-stereo or mono.
+stereo or mono. A THRU track follows its source's arpeggiator: every arp note of the source plays through it, as long as
+the source's note.
 
 ## Insert effects
 
@@ -141,7 +142,10 @@ Tap **[ARP]** in the arp menu to switch between them.
   scale steps to ARP 1's notes.
 - **New modes:** **SHUF** plays the notes in a random order and repeats it, **RAND** picks a random note each step, and
   **FREE** runs the arp like a sequencer from the pattern start, without needing trigs.
-- **SPEED** goes up to 1/128.
+- **SPEED** goes up to 1/128. Below the slowest speed is **NOTE**: the arp moves one step per note instead of with the
+  clock. On ARP 1 every trig or key plays the next note of the arp (the trigs give the rhythm, the arp the pitches, and
+  each note lasts its trig's LEN); ARP 2 moves one step per note played. Both start over at PLAY / STOP, not at the
+  pattern loop, so one trig per bar walks through the arp bar by bar.
 - **Hold [ARP] + [YES]** to randomize. In grid recording, hold a trig and turn the ARP knobs to lock them to that trig.
 
 ### Cross-modulation
@@ -193,6 +197,13 @@ While the sequencer runs, the knobs show the live value, including p-locks, slid
 the values you set. To turn this off, set **[SETTINGS] > SYSTEM > LIVE KNOBS** to OFF: the knobs then show the stored
 values, as on Elektron's OS. The setting is kept over power cycles and project loads.
 
+### Undo and redo
+
+Press **[-]** to undo and **[+]** to redo (not in KEYBOARD mode, where they change the octave). Up to 50 steps of what
+**[FUNC] + [YES]** would save, the pattern and its kit, across all tracks: knob turns, randomizes, trigs, locks and sound
+loads. One knob turn is one step, and the screen names what was undone, for example "UNDO T2 FILTER DEC". Changing the
+pattern starts a new history.
+
 ## Going back and recovery
 
 - **Back to Elektron's OS:** send `Digitone_II_OS1.12.syx` (inside Elektron's .zip) with Transfer. Overtone installs it
@@ -210,8 +221,9 @@ values, as on Elektron's OS. The setting is kept over power cycles and project l
 - **Swing is gone.** Saved swing is ignored; use GROOVE instead.
 - **DSP load:** LOOP, SOPHIE and MACHINEDRUM cost more than the stock machines. If the audio crackles, check
   **[SETTINGS] > SYSTEM > DSP LOAD** and use fewer voices.
-- **MACHINEDRUM voices are managed for you:** at most 8 ring at once (fewer while the DSP is busy), new notes take over from
-  the oldest ones (a 2.7 ms fade), and a big unison sounds with up to 8 voices.
+- **MACHINEDRUM voices are managed for you:** at most 8 ring at once, and a big unison sounds with up to 8 voices. When a
+  new note needs room, the quietest voice fades out (2.7 ms), so long decays keep ringing over drum hits. While the DSP is
+  busy only inaudible tails are cut, unless the load passes 90 %.
 - **GROOVE** is global for now (per track is planned). Tempo-synced LFOs and delays follow the BPM, not the groove.
 - **Overbridge** only knows Elektron's parameter names and ranges.
 - **Elektron's key combinations cover Overtone's parameters too:** [TRK] + [PLAY] clears them with the preset, [PARAMETER] + [NO]
