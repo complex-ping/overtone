@@ -126,7 +126,8 @@ The flanger is an original design; the phaser, chorus and reverb are ports of th
 Two per sound. On a **[MOD]** page press **RIGHT** to reach them (UP / DOWN switches follower, LEFT goes back to the
 LFOs). A follower listens to a track, the main mix, the inputs, USB or a custom mix, and moves any parameter you pick in
 **DEST**. Set how fast it reacts (**ATK**, **DEC**), the threshold (**THR**) and the depth (**DEP**, positive or
-negative). Every knob can be p-locked.
+negative). Every knob can be p-locked. Both followers are saved with the sound, including the track they listen to
+(a custom mix is saved as the sound's own track).
 
 ### Two arpeggiators
 
@@ -174,7 +175,8 @@ shorter, while the cycle as a whole stays in time.
 - **Hold [TEMPO] + [YES]** for a random groove.
 
 GROOVE moves every step on every track, including the arps and micro timing. It is saved with the pattern and also
-works when the Digitone follows an external MIDI clock.
+works when the Digitone follows an external MIDI clock. The metronome's count-in before live recording stays straight,
+and the groove also plays with the per-track scale setting RESET INF.
 
 **Swing settings:** to match any Elektron swing value, set LEN 2, step 1 to half the percentage and step 2 to 50 minus
 that (60 % = 30 and 20).
